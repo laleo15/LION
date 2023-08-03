@@ -1,0 +1,18 @@
+{%block content%}
+
+<form method="post">
+    {% csrf_token %}
+    <div>
+        <label for="nickname">닉네임</label>
+        <input type="text" class="form-control" name="nickname" id="nickname"
+        value="{{form.username.value|default_if_none:''}}">
+    </div>
+    <div>
+        <label for="password">세대</label>
+        <input type="text" class="form-control" name="password" id="password"
+        value="{{form.password.value|default_if_none:''}}">
+    </div>
+    <button type="submit" class="btn btn-primary">로그인</button>
+</form>
+
+{%endblock%}
