@@ -4,15 +4,19 @@
     {% csrf_token %}
     <div>
         <label for="nickname">닉네임</label>
-        <input type="text" class="form-control" name="nickname" id="nickname"
+        <input type="text" name="nickname" id="nickname"
         value="{{form.username.value|default_if_none:''}}">
     </div>
     <div>
         <label for="password">세대</label>
-        <input type="text" class="form-control" name="password" id="password"
-        value="{{form.password.value|default_if_none:''}}">
+        <select name="generation">
+            <option value="none">=== 선택 ===</option>
+            <option value="X세대">X세대</option>
+            <option value="X세대">Y세대</option>
+            <option value="X세대">MZ세대</option>
+        </select>
     </div>
-    <button type="submit" class="btn btn-primary">로그인</button>
+    <button type="submit">로그인</button>
 </form>
 
 {%endblock%}
