@@ -11,7 +11,6 @@ class TestQuestion(models.Model):
     def __str__(self):
         return self.subject
 
-class Userdata(AbstractUser):
+class User(AbstractUser):
     nickname=models.CharField(max_length=100)
     generation=models.CharField(max_length=100)
-    
