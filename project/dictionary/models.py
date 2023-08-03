@@ -4,12 +4,17 @@ from django.db import models
 
 class Word(models.Model):
     subject = models.CharField(max_length=200)
-    generation = models.TextField()
-
+    meaning = models.TextField()
+    generation = models.CharField(max_length=100)
+    origin=models.TextField()
+    standard = models.CharField(max_length=200)
     def __str__(self):
         return self.subject
-
-class Meaning(models.Model): 
+    
+class Synonym(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
-    content = models.TextField()
-    origin=models.TextField()
+    synonym = models.CharField(max_length=200)
+    
+class Example(models.Model):
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    example = models.TextField()

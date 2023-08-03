@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import TestQuestion, Userdata
 
-# Register your models here.
+class QuestionAdmin(admin.ModelAdmin):
+    search_fields=['subject']
+
+admin.site.register(TestQuestion, QuestionAdmin)
+admin.site.register(Userdata)

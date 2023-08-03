@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import WordQuiz
 
-# Register your models here.
+class QuizAdmin(admin.ModelAdmin):
+    search_fields=['subject']
+    
+admin.site.register(WordQuiz, QuizAdmin)
