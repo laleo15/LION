@@ -1,6 +1,6 @@
 {%block content%}
 
-<form method="post">
+<form method="post" action="{% url 'oldmantest:test'%}">
     {% csrf_token %}
     <div>
         <label for="nickname">닉네임</label>
