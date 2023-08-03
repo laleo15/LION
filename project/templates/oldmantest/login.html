@@ -3,17 +3,17 @@
 <form method="post" action="{% url 'oldmantest:test'%}">
     {% csrf_token %}
     <div>
-        <label for="nickname">닉네임</label>
-        <input type="text" name="nickname" id="nickname"
+        <label for="username">닉네임</label>
+        <input type="text" name="username" id="username"
         value="{{form.username.value|default_if_none:''}}">
     </div>
     <div>
         <label for="password">세대</label>
         <select name="generation">
-            <option value="none">=== 선택 ===</option>
+            <option value="none" selected>=== 선택 ===</option>
             <option value="X세대">X세대</option>
-            <option value="X세대">Y세대</option>
-            <option value="X세대">MZ세대</option>
+            <option value="Y세대">Y세대</option>
+            <option value="MZ세대">MZ세대</option>
         </select>
     </div>
     <button type="submit">로그인</button>
