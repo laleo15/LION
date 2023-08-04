@@ -1,0 +1,19 @@
+<div> 입력어|{{wordinput}} </div>
+<div> 표준어|{{word}} </div>
+<div> 뜻|{{word.meaning}} </div>
+<div> 유의어|{{syno.synonym}} </div>
+<div> 예문|{{ex.example}} </div>
+
+
+
+<form action="{% url 'transmeme:translate' %}" method="POST">
+    {% csrf_token %}
+    <textarea name="content" id="content" rows="15" placeholder="단어를 입력하세요"></textarea>
+    <input type="submit" value="번역하기">
+</form>
+
+<li><a href="{% url 'transmeme:translator' %}">초기화하기</a></li>
+
+{% for rank in count %}
+    <div>{{ rank.subject }}</div>
+{% endfor %}
