@@ -23,5 +23,5 @@ urlpatterns = [
     path('dictionary/', include('dictionary.urls')),
     path('oldmantest/', include('oldmantest.urls')),
     path('mzquiz/', include('mzquiz.urls')),
-    path('transmeme', include('transmeme.urls')),
+    path('transmeme/', include('transmeme.urls')),
 ]

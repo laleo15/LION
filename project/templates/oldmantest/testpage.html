@@ -1,53 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-{% comment %} <form method="post" action="{% url 'oldmantest:update_questions'%}">
+<form method="post" action="{% url 'oldmantest:update_questions'%}">
     {% csrf_token %}
     <h1> 꼰대테스트(구현 예정) </h1>
     <p> 닉네임: {{user.nickname}}</p>
+    <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
     <p> 세대: {{user.generation}}</p>
     <br>
     <strong> Question </strong>
     <table>
-        {% if random_ten %}
-        {% for question in random_ten %}
+        {% for key in user.questions.keys %}
         <tr>
-            <td>실제 인덱스: {{question}}</td>
+            <td>실제 인덱스: {{key}}</td>
             <td>문제{{forloop.counter}}</td>
             <td>
-                <label for="left{{ question }}">왼쪽</label>
-                <input type="radio" id="left{{ question }}" name="group{{ question }}" value="left"/>
-                <label for="right{{ question }}">오른쪽</label>
-                <input type="radio" id="right{{ question }}" name="group{{ question }}" value="right"/> 
+                <label for="left{{ key }}">왼쪽</label>
+                <input type="radio" id="left{{ key }}" name="group{{ key }}" value="1">
+                <label for="right{{ key }}">오른쪽</label>
+                <input type="radio" id="right{{ key }}" name="group{{ key }}" value="2"> 
             </td>
         </tr>
         {% endfor %}
-        {% endif %}
-    </table>
-    <button type="submit">제출</button>
-</form>  {% endcomment %}
-
-    <h1> 꼰대테스트(구현 예정) </h1>
-    <p> 닉네임: {{user.nickname}}</p>
-    <p> 세대: {{user.generation}}</p>
-    <br>
-    <strong> Question </strong>
-    <table>
-        {% if random_ten %}
-        {% for question in random_ten %}
-        <tr>
-            <td>실제 인덱스: {{question}}</td>
-            <td>문제{{forloop.counter}}</td>
-            <td>
-                <label for="left{{ question }}">왼쪽</label>
-                <input type="radio" id="left{{ question }}" name="group{{ question }}" value=1/>
-                <label for="right{{ question }}">오른쪽</label>
-                <input type="radio" id="right{{ question }}" name="group{{ question }}" value=2/> 
-            </td>
-        </tr>
-        {% endfor %}
-        {% endif %}
     </table>
     <button type="submit">제출</button>
 
 실제 값: {{user.questions}}
+</form>
 {% endblock %}

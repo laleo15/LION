@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>test</h1>
+
+    실제값: {{user.questions}}
+    <table>
+    {% for key, value in dictionary %}
+        <tr>
+            <td>실제문제 {{key}}번</td>
+            <td>문제 {{forloop.counter}} 번</td>
+            <td>사용자 선택: {{ value }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+
+{% endblock %}
