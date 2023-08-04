@@ -1,26 +1,24 @@
 from django.shortcuts import render,redirect
-from .models import User
+from .models import MZUser
 import random
 # Create your views here.
 
 def login(request):
     return render(request,'oldmantest/login.html')
 
-
 def test(request):
-    username=request.POST.get('username')
+    nickname=request.POST.get('nickname')
     generation=request.POST.get('generation')
     random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
     
     if generation=="none":
         generation="세대 선택을 하지 않았습니다"
-    if username=="":
-        username="닉네임을 작성하지 않았습니다"
-
-    try:
-        user = User.objects.get(username=username)
-    except User.DoesNotExist:
-        user=User(username=username, generation=generation)
+    if nickname=="":
+        nickname="닉네임을 작성하지 않았습니다"
+        
+    user=MZUser(nickname=nickname, generation=generation)
+    Userlist = MZUser.objects.all()
+    if user not in Userlist:
         for i in random_ten:
             user.questions[i]=1
         user.save()
@@ -39,3 +37,25 @@ def update_questions(request):
         
         #return redirect('quiz_result')  # 변경이 완료되면 결과 페이지로 이동
     return render(request,'oldmantest/testpage.html',context)
+
+
+# def test(request):
+#     username=request.POST.get('username')
+#     generation=request.POST.get('generation')
+#     random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
+    
+#     if generation=="none":
+#         generation="세대 선택을 하지 않았습니다"
+#     if username=="":
+#         username="닉네임을 작성하지 않았습니다"
+
+#     try:
+#         user = User.objects.get(username=username)
+#     except User.DoesNotExist:
+#         user=User(username=username, generation=generation)
+#         for i in random_ten:
+#             user.questions[i]=1
+#         user.save()
+
+#     context={'user':user,'random_ten':random_ten}
+#     return render(request,'oldmantest/testpage.html',context)

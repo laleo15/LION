@@ -3,9 +3,9 @@
 <form method="post" action="{% url 'oldmantest:test'%}">
     {% csrf_token %}
     <div>
-        <label for="username">닉네임</label>
-        <input type="text" name="username" id="username"
-        value="{{form.username.value|default_if_none:''}}">
+        <label for="nickname">닉네임</label>
+        <input type="text" name="nickname" id="nickname"
+        value="{{form.nickname.value|default_if_none:''}}">
     </div>
     <div>
         <label for="password">세대</label>

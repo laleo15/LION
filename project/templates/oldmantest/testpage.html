@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post" action="{% url 'oldmantest:update_questions'%}">
+{% comment %} <form method="post" action="{% url 'oldmantest:update_questions'%}">
     {% csrf_token %}
     <h1> 꼰대테스트(구현 예정) </h1>
     <p> 닉네임: {{user.nickname}}</p>
@@ -24,10 +24,10 @@
         {% endif %}
     </table>
     <button type="submit">제출</button>
-</form> 
+</form>  {% endcomment %}
 
-    {% comment %} <h1> 꼰대테스트(구현 예정) </h1>
-    <p> 닉네임: {{user.username}}</p>
+    <h1> 꼰대테스트(구현 예정) </h1>
+    <p> 닉네임: {{user.nickname}}</p>
     <p> 세대: {{user.generation}}</p>
     <br>
     <strong> Question </strong>
@@ -47,8 +47,7 @@
         {% endfor %}
         {% endif %}
     </table>
-    <button type="submit">제출</button> {% endcomment %}
-
+    <button type="submit">제출</button>
 
 실제 값: {{user.questions}}
 {% endblock %}
