@@ -3,11 +3,11 @@
 {% if word_list %}
     <ul>
     {% for word in word_list %}
-        <li><a href="{% url 'dictionary:detail' word.id%}">{{ word.subject }}</a></li>
+        <li><a href="{% url 'dictionary:detail' word.id %}">{{ word.subject }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>질문이 없습니다.</p>
+    <p>밈이 존재하지 않습니다..</p>
 {% endif %}
 {% endblock %}
 
