@@ -1,10 +1,30 @@
 from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import MZUser
+from .models import MZUser,TestQuestion
 import random
 # Create your views here.
 
+def question_setting():
+    #test question 100개 생성
+    question_list=[]
+    for i in range(100):
+        contents="test"+str(i)+"번"
+        left=str(i)+"의 left"
+        right=str(i)+"의 right"
+
+        #이미 존재하는 문제는 삽입하지 않는다.
+
+        try:
+            Q=get_object_or_404(TestQuestion,contents=contents)
+        except Http404:
+            q=TestQuestion(contents=contents,left=left, right=right)
+            q.save()
+            question_list.append(q)
+        
+    return 0
+
 def login(request):
+    question_setting()
     return render(request,'oldmantest/login.html')
 
 def test(request):

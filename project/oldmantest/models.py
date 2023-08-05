@@ -3,12 +3,16 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class TestQuestion(models.Model):
-    subject = models.TextField()
-    GX=models.IntegerField() #~1980
-    GY=models.IntegerField() #1981~1996
-    GMZ=models.IntegerField() #1997~
+    contents = models.TextField()
+    left=models.TextField()
+    right=models.TextField()
+
+    GX=models.IntegerField(default=0) #~1980
+    GY=models.IntegerField(default=0) #1981~1996
+    GMZ=models.IntegerField(default=0) #1997~
+
     def __str__(self):
-        return self.subject
+        return self.contents
 
 class MZUser(models.Model):
     nickname=models.CharField(max_length=100, unique=True)
