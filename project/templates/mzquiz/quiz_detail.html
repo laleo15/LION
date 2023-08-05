@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1> Detail(구현 예정) </h1>
+<form method="post" action="{% url 'mzquiz:detail_check'%}">
+    {% csrf_token %}
+    <p>{{index}}</p>
+    <p>{{quiz.subject}}</p>
+    <label for="left">{{quiz.answer}}</label>
+    <input type="radio" id="left" name="group" value="1">
+    <label for="right">{{quiz.wrong}}</label>
+    <input type="radio" id="right" name="group" value="2"> 
+
+    <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
+    <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
+
+    <button type="submit">정답확인</button>
+</form>
+
+{% endblock %}
+

@@ -47,7 +47,6 @@ def Qsetting_update(user,UserDict):
 
 def login(request):
     question_setting()
-    
     return render(request,'oldmantest/login.html')
 
 def test(request):
