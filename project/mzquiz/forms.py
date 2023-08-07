@@ -1,7 +1,7 @@
 from django import forms
 from .models import WordQuiz
 
-class AnswerForm(forms.Form):
+class RadioForm(forms.Form):
     group = forms.ChoiceField(
         choices=[("1", "왼쪽"), ("2", "오른쪽")],
         widget=forms.RadioSelect(attrs={'class': 'radio-group'}),

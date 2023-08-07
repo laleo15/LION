@@ -2,7 +2,7 @@ from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion
 import random
-from .forms import AnswerForm
+from .forms import RadioForm
 
 # Create your views here.
 
@@ -75,11 +75,11 @@ def test(request):
         user.questions[i]=0
     user.save()
 
-    form=AnswerForm(request.POST, questions=user.questions)
+    form=RadioForm(request.POST, questions=user.questions)
     if form.is_valid():
         pass
     else:
-        form = AnswerForm(questions=user.questions)
+        form = RadioForm(questions=user.questions)
 
     context={'user':user,'form':form}
     return render(request,'oldmantest/testpage.html',context)

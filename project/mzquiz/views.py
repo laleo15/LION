@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import WordQuiz
 from django.contrib import messages
 import random,json
-from .forms import AnswerForm
+from .forms import RadioForm
 # Create your views here.
 
 def quiz_setting():
@@ -44,7 +44,7 @@ def detail(request):
     random_ten = json.loads(data_received)
     quiz=QuizDB[random_ten[index]]
 
-    form = AnswerForm(request.POST or None)
+    form = RadioForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             group_value = form.cleaned_data['group']
@@ -75,7 +75,7 @@ def detail_check(request):
 
     quiz=QuizDB[random_ten[index]]
 
-    form = AnswerForm(request.POST or None)
+    form = RadioForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
             group_value = form.cleaned_data['group']

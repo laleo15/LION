@@ -1,9 +1,9 @@
 from django import forms
 
-class AnswerForm(forms.Form):
+class RadioForm(forms.Form):
     def __init__(self, *args, **kwargs):
         questions = kwargs.pop('questions')  # 데이터베이스에서 가져온 질문들
-        super(AnswerForm, self).__init__(*args, **kwargs)
+        super(RadioForm, self).__init__(*args, **kwargs)
         
         for index, question in enumerate(questions,start=1):
             field_name = f'question_{question}'
