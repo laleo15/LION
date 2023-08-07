@@ -43,15 +43,19 @@ def detail(request):
     
     random_ten = json.loads(data_received)
     quiz=QuizDB[random_ten[index]]
-
-    form = RadioForm(request.POST or None)
+    
+    form = RadioForm(request.POST,quiz=quiz)
     if request.method == 'POST':
         if form.is_valid():
             group_value = form.cleaned_data['group']
+            print(group_value)
             if group_value == '1':
+                print("answer")
                 messages.success(request, "answer!")
             else:
                 messages.error(request, "wrong!")
+        else:
+            form = RadioForm(quiz=quiz)
 
     context = {
         'random_ten': random_ten,
@@ -75,7 +79,7 @@ def detail_check(request):
 
     quiz=QuizDB[random_ten[index]]
 
-    form = RadioForm(request.POST or None)
+    form = RadioForm(request.POST,quiz=quiz)
     if request.method == 'POST':
         if form.is_valid():
             group_value = form.cleaned_data['group']
@@ -83,6 +87,8 @@ def detail_check(request):
                 messages.success(request, "answer!")
             else:
                 messages.error(request, "wrong!")
+        else:
+            form = RadioForm(quiz=quiz)
 
 
     context = {
