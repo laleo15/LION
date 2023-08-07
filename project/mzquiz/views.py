@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import WordQuiz
 from django.contrib import messages
 import random,json
+from .forms import AnswerForm
 # Create your views here.
 
 def quiz_setting():
@@ -43,7 +44,21 @@ def detail(request):
     random_ten = json.loads(data_received)
     quiz=QuizDB[random_ten[index]]
 
-    context={'random_ten':random_ten,'index':index,'quiz':quiz}
+    form = AnswerForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            group_value = form.cleaned_data['group']
+            if group_value == '1':
+                messages.success(request, "answer!")
+            else:
+                messages.error(request, "wrong!")
+
+    context = {
+        'random_ten': random_ten,
+        'index': index,
+        'quiz': quiz,
+        'form': form,
+    }
 
     return render(request, 'mzquiz/quiz_detail.html',context)
 
@@ -60,13 +75,21 @@ def detail_check(request):
 
     quiz=QuizDB[random_ten[index]]
 
-    group = request.POST.get('group')
+    form = AnswerForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            group_value = form.cleaned_data['group']
+            if group_value == '1':
+                messages.success(request, "answer!")
+            else:
+                messages.error(request, "wrong!")
 
-    if group=="1":
-        messages.info(request,"answer!")
-    else:
-        messages.info(request,"wrong!")
 
-    context={'random_ten':random_ten,'index':index,'quiz':quiz}
+    context = {
+        'random_ten': random_ten,
+        'index': index,
+        'quiz': quiz,
+        'form': form,
+    }
 
     return render(request, 'mzquiz/quiz_detail.html',context)

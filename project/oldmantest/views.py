@@ -2,6 +2,8 @@ from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion
 import random
+from .forms import AnswerForm
+
 # Create your views here.
 
 def question_setting():
@@ -73,7 +75,13 @@ def test(request):
         user.questions[i]=0
     user.save()
 
-    context={'user':user}
+    form=AnswerForm(request.POST, questions=user.questions)
+    if form.is_valid():
+        pass
+    else:
+        form = AnswerForm(questions=user.questions)
+
+    context={'user':user,'form':form}
     return render(request,'oldmantest/testpage.html',context)
 
 def update_questions(request):
@@ -83,7 +91,7 @@ def update_questions(request):
 
         selected_Q={}
         for key in user.questions.keys():
-            selected=request.POST.get(f'group{key}')
+            selected=request.POST.get(f'question_{key}')
             selected_Q[int(key)]=int(selected)
 
         user.questions=selected_Q
@@ -95,6 +103,7 @@ def update_questions(request):
         sendDict={}
         for key in user.questions.keys():
             sendDict[key]=[user.questions[key],QList[key]]
+
         
         context={'user':user, 'sendDict':sendDict.items()}
         
