@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>test</h1>
+
+    실제값: {{user.questions}}
+    <table>
+    {% for key, values in sendDict %}
+        <tr>
+            <td>실제문제 {{key}}번</td>
+            <td>문제 {{forloop.counter}} 번</td>
+            <td>사용자 선택: {{ values.0}}</td>
+            <td>문제 TOTAL 선택: {{ values.1.Total}}</td>
+            <td>문제 left의 X세대 선택: {{ values.1.LGX}}</td>
+            <td>문제 right의 X세대 선택: {{ values.1.RGX}}</td>
+            <td>문제 left의 Y세대 선택: {{ values.1.LGY}}</td>
+            <td>문제 right의 Y세대 선택: {{ values.1.RGY}}</td>
+            <td>문제 left의 MZ세대 선택: {{ values.1.LGMZ}}</td>
+            <td>문제 right의 MZ세대 선택: {{ values.1.RGMZ}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

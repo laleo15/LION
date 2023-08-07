@@ -1,0 +1,22 @@
+{%block content%}
+
+<form method="post" action="{% url 'oldmantest:test'%}">
+    {% csrf_token %}
+    <div>
+        <label for="nickname">닉네임</label>
+        <input type="text" name="nickname" id="nickname"
+        value="{{form.nickname.value|default_if_none:''}}">
+    </div>
+    <div>
+        <label for="password">세대</label>
+        <select name="generation">
+            <option value="none" selected>=== 선택 ===</option>
+            <option value="X세대">X세대(~1980)</option>
+            <option value="Y세대">Y세대(1981~1996)</option>
+            <option value="MZ세대">MZ세대(1997~)</option>
+        </select>
+    </div>
+    <button type="submit">로그인</button>
+</form>
+
+{%endblock%}
