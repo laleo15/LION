@@ -1,4 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1> 꼰대테스트(구현 예정) </h1>
+<form method="post" action="{% url 'oldmantest:update_questions'%}">
+    {% csrf_token %}
+    <h1> 꼰대테스트(구현 예정) </h1>
+    <p> 닉네임: {{user.nickname}}</p>
+    <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
+    <p> 세대: {{user.generation}}</p>
+    <br>
+    <strong> Question </strong>
+    <table>
+        {% for key in user.questions.keys %}
+        <tr>
+            <td>실제 인덱스: {{key}}</td>
+            <td>문제{{forloop.counter}}</td>
+            <td>
+                <label for="left{{ key }}">왼쪽</label>
+                <input type="radio" id="left{{ key }}" name="group{{ key }}" value="1">
+                <label for="right{{ key }}">오른쪽</label>
+                <input type="radio" id="right{{ key }}" name="group{{ key }}" value="2"> 
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">제출</button>
+
+실제 값: {{user.questions}}
+</form>
 {% endblock %}
