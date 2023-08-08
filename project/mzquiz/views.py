@@ -3,7 +3,6 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import WordQuiz
 from django.contrib import messages
 import random,json
-from .forms import RadioForm
 # Create your views here.
 
 def quiz_setting():
@@ -39,39 +38,8 @@ def main(request):
 def detail(request):
     QuizDB=WordQuiz.objects.all()
     data_received=request.POST.get('random_ten')
+    random_ten = json.loads(data_received)
     index=int(request.POST.get('index'))
-    
-    random_ten = json.loads(data_received)
-    quiz=QuizDB[random_ten[index]]
-    
-    form = RadioForm(request.POST,quiz=quiz)
-    if request.method == 'POST':
-        if form.is_valid():
-            group_value = form.cleaned_data['group']
-            print(group_value)
-            if group_value == '1':
-                print("answer")
-                messages.success(request, "answer!")
-            else:
-                messages.error(request, "wrong!")
-        else:
-            form = RadioForm(quiz=quiz)
-
-    context = {
-        'random_ten': random_ten,
-        'index': index,
-        'quiz': quiz,
-        'form': form,
-    }
-
-    return render(request, 'mzquiz/quiz_detail.html',context)
-
-
-def detail_check(request):
-    QuizDB=WordQuiz.objects.all()
-    data_received=request.POST.get('random_ten')
-    random_ten = json.loads(data_received)
-    index=int(request.POST.get('index'))+1
 
     #10문제 다 풀면 mzquiz main화면으로 화면 전환
     if index==10:
@@ -79,23 +47,44 @@ def detail_check(request):
 
     quiz=QuizDB[random_ten[index]]
 
-    form = RadioForm(request.POST,quiz=quiz)
-    if request.method == 'POST':
-        if form.is_valid():
-            group_value = form.cleaned_data['group']
-            if group_value == '1':
-                messages.success(request, "answer!")
-            else:
-                messages.error(request, "wrong!")
-        else:
-            form = RadioForm(quiz=quiz)
-
-
+    #index+1을 하는 이유는 문제 0~9로 표현하지 않고, 문제 1~10로 표현하기 위해
     context = {
         'random_ten': random_ten,
-        'index': index,
-        'quiz': quiz,
-        'form': form,
+        'index': index+1,
+        'quiz': quiz
     }
 
     return render(request, 'mzquiz/quiz_detail.html',context)
+
+
+def detail_result(request):
+    QuizDB=WordQuiz.objects.all()
+    data_received=request.POST.get('random_ten')
+    
+    random_ten = json.loads(data_received)
+    index=int(request.POST.get('index'))
+    quiz=QuizDB[random_ten[index]]
+
+    try:
+        selected=int(request.POST['choice'])
+    except(KeyError):
+        context={
+            'random_ten': random_ten,
+            'index': index,
+            'quiz': quiz,
+            'error_message':"You didn't select a choice"
+        }
+        return render(request,'mzquiz/quiz_detail.html',context)
+    else:
+        result=''
+        if selected==1:
+            result='정답입니다!'
+        else:
+            result='틀렸습니다!'
+
+        context={
+            'random_ten':random_ten,
+            'index':index,
+            'result':result
+        }
+        return render(request,'mzquiz/quiz_result.html',context)

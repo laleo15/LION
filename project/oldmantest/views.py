@@ -37,7 +37,6 @@ def Qsetting_update(user,UserDict):
             elif user.generation == "MZ세대":
                 q.LGMZ+=1
         if value==2:
-            print(user.generation)
             if user.generation == "X세대":
                 q.RGX+=1
             elif user.generation == "Y세대":
