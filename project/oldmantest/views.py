@@ -43,14 +43,36 @@ def login_after(request):
     index=int(request.POST.get('index'))
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     
-    if generation=="none":
-        generation="세대 선택을 하지 않았습니다"
+    #예외처리
     if nickname=="":
-        nickname="닉네임을 작성하지 않았습니다"
+        error_message="닉네임을 작성하지 않았습니다"
+        context={
+            'random_ten':random_ten,
+            'index':index,
+            'error_message':error_message
+        }
+        return render(request,"oldmantest/login.html",context)
+    if generation=="none":
+        error_message="세대 선택을 하지 않았습니다"
+        context={
+            'random_ten':random_ten,
+            'index':index,
+            'error_message':error_message
+        }
+        return render(request,"oldmantest/login.html",context)
         
+
     try:
         user=get_object_or_404(MZUser,nickname=nickname)
         user.questions={}
+        if user.generation!=generation:
+            error_message="이미 존재하는 닉네임입니다!"
+            context={
+                'random_ten':random_ten,
+                'index':index,
+                'error_message':error_message
+            }
+            return render(request,"oldmantest/login.html",context)
     except Http404:
         user=MZUser(nickname=nickname,generation=generation)
     

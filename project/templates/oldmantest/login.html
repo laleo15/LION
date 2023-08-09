@@ -3,6 +3,7 @@
 <form method="post" action="{% url 'oldmantest:login_after'%}">
     {% csrf_token %}
     <div>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <label for="nickname">닉네임</label>
         <input type="text" name="nickname" id="nickname"
         value="{{form.nickname.value|default_if_none:''}}">
