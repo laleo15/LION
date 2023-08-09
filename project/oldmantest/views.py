@@ -176,7 +176,12 @@ def update_questions(request,user):
         k=int(key)
         sendDict[k]=[user.questions[key],QList[k]]
 
-    context={'user':user, 'sendDict':sendDict.items()}
+    comment_list=Comment.objects.order_by('-create_date')[:10]
+    context={
+        'user':user,
+        'sendDict':sendDict.items(),
+        'comment_list':comment_list,
+        }
     
     return render(request,'oldmantest/testresult.html',context)
 
