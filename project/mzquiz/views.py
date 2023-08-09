@@ -63,11 +63,11 @@ def detail_result(request):
     
     random_ten = json.loads(data_received)
     index=int(request.POST.get('index'))
-    quiz=QuizDB[random_ten[index]]
 
     try:
         selected=int(request.POST['choice'])
     except(KeyError):
+        quiz=QuizDB[random_ten[index-1]]
         context={
             'random_ten': random_ten,
             'index': index,
@@ -81,7 +81,7 @@ def detail_result(request):
             result='정답입니다!'
         else:
             result='틀렸습니다!'
-
+        quiz=QuizDB[random_ten[index]]
         context={
             'random_ten':random_ten,
             'index':index,

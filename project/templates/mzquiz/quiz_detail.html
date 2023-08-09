@@ -3,7 +3,7 @@
 <h1> Detail </h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
+{{random_ten}}
 <form method="post" action="{% url 'mzquiz:detail_result'%}">
     {% csrf_token %}
     <p>{{index}}</p>

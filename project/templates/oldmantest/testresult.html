@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>test</h1>
-
-    실제값: {{user.questions}}
+<h1>Result</h1>
+    <p> 닉네임: {{user.nickname}}</p>
+    <p> 세대: {{user.generation}}</p>
+    <p>사용자선택: {{user.questions}}</p>
+    
     <table>
     {% for key, values in sendDict %}
         <tr>

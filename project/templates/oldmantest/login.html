@@ -1,6 +1,6 @@
 {%block content%}
 
-<form method="post" action="{% url 'oldmantest:test'%}">
+<form method="post" action="{% url 'oldmantest:login_after'%}">
     {% csrf_token %}
     <div>
         <label for="nickname">닉네임</label>
@@ -16,6 +16,10 @@
             <option value="MZ세대">MZ세대(1997~)</option>
         </select>
     </div>
+
+    <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
+    <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
+
     <button type="submit">로그인</button>
 </form>
 

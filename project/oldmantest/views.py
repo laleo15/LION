@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion
-import random
+import random,json
 from .forms import RadioForm
 
 # Create your views here.
@@ -24,36 +24,24 @@ def question_setting():
         
     return 0
 
-def Qsetting_update(user,UserDict):
-    question_list=TestQuestion.objects.all()    
-
-    for key, value in UserDict:
-        q=question_list[key]
-        if value==1:
-            if user.generation == "X세대":
-                q.LGX+=1
-            elif user.generation == "Y세대":
-                q.LGY+=1
-            elif user.generation == "MZ세대":
-                q.LGMZ+=1
-        if value==2:
-            if user.generation == "X세대":
-                q.RGX+=1
-            elif user.generation == "Y세대":
-                q.RGY+=1
-            elif user.generation == "MZ세대":
-                q.RGMZ+=1
-        q.Total=q.LGX+q.RGX+q.LGY+q.RGY+q.LGMZ+q.RGMZ
-        q.save()
 
 def login(request):
     question_setting()
-    return render(request,'oldmantest/login.html')
+    random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
+    index=0
+    #추후에 데이터베이스에는 문제 0~99번으로 등록 
+    context={
+        'random_ten':random_ten,
+        'index':index
+    }
+    return render(request,'oldmantest/login.html',context)
 
-def test(request):
+def login_after(request):
     nickname=request.POST.get('nickname')
     generation=request.POST.get('generation')
-    random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
+    data_received=request.POST.get('random_ten')
+    random_ten = json.loads(data_received)
+    index=int(request.POST.get('index'))
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     
     if generation=="none":
@@ -74,37 +62,102 @@ def test(request):
         user.questions[i]=0
     user.save()
 
-    form=RadioForm(request.POST, questions=user.questions)
-    if form.is_valid():
-        pass
-    else:
-        form = RadioForm(questions=user.questions)
+    QDB=TestQuestion.objects.all()
+    question=QDB[random_ten[index]]
 
-    context={'user':user,'form':form}
+    context={
+        'user':user,
+        'random_ten':random_ten,
+        'index':index+1,
+        'question':question
+    }
+
     return render(request,'oldmantest/testpage.html',context)
 
-def update_questions(request):
-    if request.method=='POST':
-        nickname=request.POST.get('nickname')
-        user=get_object_or_404(MZUser,nickname=nickname)
 
+
+def test(request):
+    nickname=request.POST.get('nickname')
+    generation=request.POST.get('generation')
+    data_received=request.POST.get('random_ten')
+
+    random_ten = json.loads(data_received)
+    index=int(request.POST.get('index'))
+    user=get_object_or_404(MZUser,nickname=nickname)
+    
+    QDB=TestQuestion.objects.all()
+
+    try:
+        selected=int(request.POST['choice'])
+    except(KeyError):
+        question=QDB[random_ten[index-1]]
+        context={
+            'user':user,
+            'random_ten': random_ten,
+            'index': index,
+            'question': question,
+            'error_message':"You didn't select a choice"
+        }
+    else:
         selected_Q={}
         for key in user.questions.keys():
-            selected=request.POST.get(f'question_{key}')
-            selected_Q[int(key)]=int(selected)
+            if int(key)==random_ten[index-1]:
+                selected_Q[int(key)]=selected
+            else:
+                selected_Q[int(key)]=user.questions[key]
 
         user.questions=selected_Q
         user.save()
+        
+        if index==10:
+            return update_questions(request,user)
 
-        Qsetting_update(user,user.questions.items())
-        QList=TestQuestion.objects.all()
-        
-        sendDict={}
-        for key in user.questions.keys():
-            sendDict[key]=[user.questions[key],QList[key]]
+        question=QDB[random_ten[index]]
 
-        
-        context={'user':user, 'sendDict':sendDict.items()}
-        
-        return render(request,'oldmantest/testresult.html',context)
-    return redirect('oldmantest:login')
+        context={
+            'user':user,
+            'random_ten':random_ten,
+            'index':index+1,
+            'question':question
+        }
+    return render(request,'oldmantest/testpage.html',context)
+
+
+
+def Qsetting_update(user,UserDict):
+    question_list=TestQuestion.objects.all()    
+
+    for key, value in UserDict:
+        q=question_list[int(key)]
+        if value==1:
+            if user.generation == "X세대":
+                q.LGX+=1
+            elif user.generation == "Y세대":
+                q.LGY+=1
+            elif user.generation == "MZ세대":
+                q.LGMZ+=1
+        if value==2:
+            if user.generation == "X세대":
+                q.RGX+=1
+            elif user.generation == "Y세대":
+                q.RGY+=1
+            elif user.generation == "MZ세대":
+                q.RGMZ+=1
+        q.Total=q.LGX+q.RGX+q.LGY+q.RGY+q.LGMZ+q.RGMZ
+        q.save()
+
+
+
+def update_questions(request,user):
+    Qsetting_update(user,user.questions.items())
+    QList=TestQuestion.objects.all()
+    sendDict={}
+    for key in user.questions.keys():
+        k=int(key)
+        sendDict[k]=[user.questions[key],QList[k]]
+
+    
+    context={'user':user, 'sendDict':sendDict.items()}
+
+    return render(request,'oldmantest/testresult.html',context)
+
