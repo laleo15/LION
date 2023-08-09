@@ -7,7 +7,6 @@ import random,json
 
 def quiz_setting():
     #quiz question 100개 생성
-    quiz_list=[]
     for i in range(100):
         subject="quiz"+str(i)+"번"
         answer=str(i)+"의 answer"
@@ -19,7 +18,6 @@ def quiz_setting():
         except Http404:
             q=WordQuiz(subject=subject,answer=answer, wrong=wrong)
             q.save()
-            quiz_list.append(q)
     return 0
 
 

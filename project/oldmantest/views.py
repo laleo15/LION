@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import MZUser,TestQuestion,Comment
+from .models import MZUser,TestQuestion,Comment,Grade
 from django.utils import timezone
 import random,json
 
@@ -8,7 +8,6 @@ import random,json
 
 def question_setting():
     #test question 10개 생성
-    question_list=[]
     for i in range(10):
         contents="test"+str(i)+"번"
         left=str(i)+"의 left"
@@ -20,7 +19,37 @@ def question_setting():
         except Http404:
             q=TestQuestion(contents=contents,left=left, right=right)
             q.save()
-            question_list.append(q)
+
+    #Grade 3개 속성 지정
+    grade1="요즘꼰대"
+    F1one="요즘꼰대의 특징1"
+    F1two="요즘꼰대의 특징2"
+    F1third="요즘꼰대의 특징3"
+    try:
+        G=get_object_or_404(Grade,grade=grade1)
+    except Http404:
+        g=Grade(grade=grade1,Fone=F1one, Ftwo=F1two,Fthird=F1third)
+        g.save()
+
+    grade2="킹반인"
+    F2one="킹반인의 특징1"
+    F2two="킹반인의 특징2"
+    F2third="킹반인의 특징3"
+    try:
+        G=get_object_or_404(Grade,grade=grade2)
+    except Http404:
+        g=Grade(grade=grade2,Fone=F2one, Ftwo=F2two,Fthird=F2third)
+        g.save()
+
+    grade3="뼛속MZ"
+    F3one="뼛속MZ의 특징1"
+    F3two="뼛속MZ의 특징2"
+    F3third="뼛속MZ의 특징3"
+    try:
+        G=get_object_or_404(Grade,grade=grade3)
+    except Http404:
+        g=Grade(grade=grade3,Fone=F3one, Ftwo=F3two,Fthird=F3third)
+        g.save()
         
     return 0
 
@@ -122,6 +151,7 @@ def test(request):
         user.save()
 
         if index==10:
+            Qsetting_update(user,user.questions.items())
             return update_questions(request,user)
 
         question=QDB[index]
@@ -136,11 +166,12 @@ def test(request):
 
 
 def Qsetting_update(user,UserDict):
-    question_list=TestQuestion.objects.all()    
-
+    question_list=TestQuestion.objects.all()
+    user.count=0    
     for key, value in UserDict:
         q=question_list[int(key)]
         if value==1:  #left 선택
+            user.count+=1
             if user.generation == "X세대":
                 q.LGX+=1
             elif user.generation == "M세대":
@@ -163,24 +194,38 @@ def Qsetting_update(user,UserDict):
         q.Prgx=round(q.RGX*100/q.Total)
         q.Prgm=round(q.RGM*100/q.Total)
         q.Prgz=round(q.RGZ*100/q.Total)
+        user.save()
         q.save()
 
 
 
 def update_questions(request,user):
-    Qsetting_update(user,user.questions.items())
     QList=TestQuestion.objects.all()
     sendDict={}
-    
+    selected_Q={}
     for key in user.questions.keys():
         k=int(key)
         sendDict[k]=[user.questions[key],QList[k]]
+        selected_Q[int(key)]=user.questions[key]
+    
+    user.questions=selected_Q
+    user.save()
+    
+    if user.count>=7:
+        grade="요즘꼰대"
+    elif user.count>=3:
+        grade="킹반인"
+    else:
+        grade="뼛속MZ"
+    G=get_object_or_404(Grade,grade=grade)
+    
 
     comment_list=Comment.objects.order_by('-create_date')[:10]
     context={
         'user':user,
         'sendDict':sendDict.items(),
         'comment_list':comment_list,
+        'G':G,
         }
     
     return render(request,'oldmantest/testresult.html',context)
@@ -198,20 +243,7 @@ def update_comment(request):
     C=Comment(nickname=Cnickname, comment=comment,create_date=create_date)
     C.save()
 
-    comment_list=Comment.objects.order_by('-create_date')[:10]
     user=get_object_or_404(MZUser,nickname=nickname)
-    
-    QList=TestQuestion.objects.all()
-    sendDict={}
-    for key in user.questions.keys():
-        k=int(key)
-        sendDict[k]=[user.questions[key],QList[k]]
-    
-    context={
-        'user':user,
-        'sendDict':sendDict.items(),
-        'comment_list':comment_list,
-        }
 
-    return render(request,'oldmantest/testresult.html',context)
+    return update_questions(request,user)
 

@@ -4,13 +4,21 @@
     <p> 닉네임: {{user.nickname}}</p>
     <p> 세대: {{user.generation}}</p>
     <p>사용자선택: {{user.questions}}</p>
+    <p>사용자 동의 개수: {{user.count}}</p>
 
+    <br>
+    <h3>당신은  {{G.grade}}입니다. </h3>
+    <p>특징1: {{G.Fone}}</p>
+    <p>특징2: {{G.Ftwo}}</p>
+    <p>특징3: {{G.Fthird}}</p>
+
+    <br>
     <form method="post" action="{%url 'oldmantest:update_comment'%}">
         {% csrf_token %}
         <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
         <input style="display:none;" type="text" name="generation" id="generation" value="{{user.generation}}">
 
-        <label for="comment">COMMENT</label>
+        <h3>COMMENT</h3>
         <textarea name="comment" id="comment" rows="1"></textarea>
         <button type="submit">등록</button>
     </form>
