@@ -55,36 +55,3 @@ def detail(request):
     }
 
     return render(request, 'mzquiz/quiz_detail.html',context)
-
-
-def detail_result(request):
-    QuizDB=WordQuiz.objects.all()
-    data_received=request.POST.get('random_ten')
-    
-    random_ten = json.loads(data_received)
-    index=int(request.POST.get('index'))
-
-    try:
-        selected=int(request.POST['choice'])
-    except(KeyError):
-        quiz=QuizDB[random_ten[index-1]]
-        context={
-            'random_ten': random_ten,
-            'index': index,
-            'quiz': quiz,
-            'error_message':"You didn't select a choice"
-        }
-        return render(request,'mzquiz/quiz_detail.html',context)
-    else:
-        result=''
-        if selected==1:
-            result='정답입니다!'
-        else:
-            result='틀렸습니다!'
-        quiz=QuizDB[random_ten[index]]
-        context={
-            'random_ten':random_ten,
-            'index':index,
-            'result':result
-        }
-        return render(request,'mzquiz/quiz_result.html',context)
