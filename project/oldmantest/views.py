@@ -2,7 +2,6 @@ from django.http import Http404
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion
 import random,json
-from .forms import RadioForm
 
 # Create your views here.
 
@@ -108,7 +107,7 @@ def test(request):
 
         user.questions=selected_Q
         user.save()
-        
+
         if index==10:
             return update_questions(request,user)
 
