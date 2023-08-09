@@ -1,24 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Result</h1>
+    <h1>Result</h1>
     <p> 닉네임: {{user.nickname}}</p>
     <p> 세대: {{user.generation}}</p>
     <p>사용자선택: {{user.questions}}</p>
-    
-    <table>
-    {% for key, values in sendDict %}
-        <tr>
-            <td>실제문제 {{key}}번</td>
-            <td>문제 {{forloop.counter}} 번</td>
-            <td>사용자 선택: {{ values.0}}</td>
-            <td>문제 TOTAL 선택: {{ values.1.Total}}</td>
-            <td>문제 left의 X세대 선택: {{ values.1.LGX}}</td>
-            <td>문제 right의 X세대 선택: {{ values.1.RGX}}</td>
-            <td>문제 left의 Y세대 선택: {{ values.1.LGY}}</td>
-            <td>문제 right의 Y세대 선택: {{ values.1.RGY}}</td>
-            <td>문제 left의 MZ세대 선택: {{ values.1.LGMZ}}</td>
-            <td>문제 right의 MZ세대 선택: {{ values.1.RGMZ}}</td>
-        </tr>
-    {% endfor %}
-    </table>
+
+    <form method="post" action="{%url 'oldmantest:update_comment'%}">
+        {% csrf_token %}
+        <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
+        <input style="display:none;" type="text" name="generation" id="generation" value="{{user.generation}}">
+
+        <label for="comment">COMMENT</label>
+        <textarea name="comment" id="comment" rows="1"></textarea>
+        <button type="submit">등록</button>
+    </form>
+
+    <br>
+    <div class="realtime_comment">
+        <h3>실시간 COMMENT</h3>
+        {% if comment_list %}
+        <table>
+        {% for comment in comment_list %}
+            <tr>
+                <td>{{comment.nickname}}</td>
+                <td>{{comment.comment}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+        <p>아직 코멘트가 없습니다! 첫번째로 코멘트를 남겨보세요!!</p>
+        {% endif %}
+    </div>
+
+    <br>
+    <div class="statistics">
+        <h3>통계</h3>
+        <table>
+            {% for key, values in sendDict %}
+                <tr>
+                    {% comment %} <td>실제문제 {{key}}번</td> {% endcomment %}
+                    <td>문제 {{forloop.counter}}번, 사용자 선택: {{ values.0}}</td>
+                    <td>O 선택</td>
+                    <td>X 선택</td>
+                </tr>
+                <tr>
+                    <td>X세대</td>
+                    <td>{{values.1.Plgx}}%</td>
+                    <td>{{values.1.Prgx}}%</td>
+                </tr>
+                <tr>
+                    <td>M세대</td>
+                    <td>{{values.1.Plgm}}%</td>
+                    <td>{{values.1.Prgm}}%</td>
+                </tr>
+                <tr>
+                    <td>Z세대</td>
+                    <td>{{values.1.Plgz}}%</td>
+                    <td>{{values.1.Prgz}}%</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
 {% endblock %}

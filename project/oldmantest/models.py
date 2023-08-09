@@ -8,13 +8,19 @@ class TestQuestion(models.Model):
     right=models.TextField()
 
     LGX=models.IntegerField(default=0) #~1980
+    Plgx=models.IntegerField(default=0) #~1980
     RGX=models.IntegerField(default=0) #~1980
+    Prgx=models.IntegerField(default=0) #~1980
 
-    LGY=models.IntegerField(default=0) #1981~1996
-    RGY=models.IntegerField(default=0) #1981~1996
+    LGM=models.IntegerField(default=0) #1981~1996
+    Plgm=models.IntegerField(default=0)
+    RGM=models.IntegerField(default=0) #1981~1996
+    Prgm=models.IntegerField(default=0)
 
-    LGMZ=models.IntegerField(default=0) #1997~
-    RGMZ=models.IntegerField(default=0) #1997~
+    LGZ=models.IntegerField(default=0) #1997~
+    Plgz=models.IntegerField(default=0)
+    RGZ=models.IntegerField(default=0) #1997~
+    Prgz=models.IntegerField(default=0)
 
     Total=models.IntegerField(default=0) #전체 값 저장할 변수
 
@@ -34,4 +40,12 @@ class MZUser(models.Model):
     # 0-> 해당 문제의 답을 아직 선택하지 않음.
     # 1-> 해당 문제의 왼쪽 답을 선택
     # 2-> 해당 문제의 오른쪽 답을 선택
+
+class Comment(models.Model):
+    nickname=models.CharField(max_length=100)
+    comment=models.CharField(max_length=100)
+    create_date = models.DateTimeField()
+
+    def __str__(self):
+        return self.nickname
 
