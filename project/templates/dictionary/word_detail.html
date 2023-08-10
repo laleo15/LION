@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+{%block content%}
+
 <h1>{{ word.subject }}</h1>
 
 <div>{{ word.meaning }}</div>
@@ -6,3 +9,9 @@
 <div>{{ word.standard }}</div>
 <div>{{ ex.example }}</div>
 <div>{{ syno.synonym }}</div>
+
+
+
+<li><a href="{% url 'dictionary:starting' %}">구분없이 출력하기</a></li>
+<li><a href="{% url 'dictionary:generation' %}">세대별로 출력하기</a></li>
+{%endblock%}

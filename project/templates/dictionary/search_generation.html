@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if categorized_word_list %}
+    {% for generation, generation_words in categorized_word_list.items %}
+        <h1>{{ generation }}</h1>
+        {% for initial_sound, words in generation_words.items %}
+            <h2>{{ initial_sound }}</h2>
+            <ul>
+                {% for word in words %}
+                    <li><a href="{% url 'dictionary:detail' word.id %}">{{ word.subject }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endfor %}
+{% else %}
+    <p>단어가 존재하지 않습니다.</p>
+{% endif %}
+
+<li><a href="{% url 'dictionary:starting' %}">구분없이 출력하기</a></li>
+<li><a href="{% url 'dictionary:generation' %}">세대별로 출력하기</a></li>
+{% endblock %}

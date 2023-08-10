@@ -1,5 +1,9 @@
+{% extends 'base.html' %}
+{%block content%}
+
 <form action="{% url 'transmeme:translate' %}" method="POST">
     {% csrf_token %}
     <textarea name="content" id="content" rows="15" placeholder="단어를 입력하세요"></textarea>
     <input type="submit" value="번역하기">
 </form>
+{%endblock%}

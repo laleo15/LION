@@ -14,7 +14,7 @@ def translate(request):
             example = Example.objects.filter(word=w)
             n = int(w.count)
             Word.objects.filter(subject=w).update(count = n + 1)
-            lookup=Word.objects.all().order_by('-count')
+            lookup=Word.objects.all().order_by('-count')[:10]
             context = {
                 "word": w,
                 "wordinput": wordinput,
@@ -25,7 +25,7 @@ def translate(request):
             return render(request, 'transmeme/result.html', context)
 
     # If no matching word is found, return this context
-    lookup=Word.objects.all().order_by('count')
+    lookup=Word.objects.all().order_by('-count')[:10]
     context = {
         "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
         "wordinput": wordinput,
