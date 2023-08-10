@@ -46,7 +46,6 @@
         <table>
             {% for key, values in sendDict %}
                 <tr>
-                    {% comment %} <td>실제문제 {{key}}번</td> {% endcomment %}
                     <td>문제 {{forloop.counter}}번, 사용자 선택: {{ values.0}}</td>
                     <td>O 선택</td>
                     <td>X 선택</td>

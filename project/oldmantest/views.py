@@ -65,26 +65,34 @@ def login(request):
 
 def login_after(request):
     nickname=request.POST.get('nickname')
-    generation=request.POST.get('generation')
+    age=request.POST.get('age')
     index=int(request.POST.get('index'))
     
     #예외처리
     if nickname=="":
-        error_message="닉네임을 작성하지 않았습니다"
+        error_message="닉네임을 입력하지 않았습니다"
         context={
             'index':index,
             'error_message':error_message
         }
         return render(request,"oldmantest/login.html",context)
 
-    if generation=="none":
-        error_message="세대 선택을 하지 않았습니다"
+    if age=="":
+        error_message="나이를 입력하지 않았습니다"
         context={
             'index':index,
             'error_message':error_message
         }
         return render(request,"oldmantest/login.html",context)
-        
+    
+    #나이 -> 세대 변환
+    if int(age)>=43:
+        generation="X"
+    elif int(age)>=27:
+        generation="M"
+    else:
+        generation="Z"
+    
 
     try:
         user=get_object_or_404(MZUser,nickname=nickname)
@@ -236,7 +244,7 @@ def update_comment(request):
     nickname=request.POST.get('nickname')
     generation=request.POST.get('generation')
 
-    Cnickname=nickname+'('+generation[0]+')'
+    Cnickname=nickname+'('+generation+')'
     comment=request.POST.get('comment')
     create_date=timezone.now()
     

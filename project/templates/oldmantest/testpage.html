@@ -4,20 +4,20 @@
 
 <form method="post" action="{% url 'oldmantest:test'%}">
     {% csrf_token %}
-    <p> 닉네임: {{user.nickname}}</p>
-    <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
-    <p> 세대: {{user.generation}}</p>
     <strong> Question{{index}} </strong>
     <br>
     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <br>
     <input type="radio" name="choice" id="choice1" value="1">
     <label for="choice1">{{ question.left }}</label><br>
 
     <input type="radio" name="choice" id="choice2" value="2">
     <label for="choice2">{{ question.right }}</label><br>
+    
 
     <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
-    
+    <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
+    <br>
     <button type="submit">다음문제</button>
 </form>
 {% endblock %}
