@@ -26,17 +26,21 @@
     <br>
     <div class="realtime_comment">
         <h3>실시간 COMMENT</h3>
-        {% if comment_list %}
-        <table>
-        {% for comment in comment_list %}
-            <tr>
-                <td>{{comment.nickname}}</td>
-                <td>{{comment.comment}}</td>
-            </tr>
+        {% if date_list %}
+        {% for date in date_list %}
+            <h5>{{ date }}</h5>
+            {% for comment, values in sendComment %}
+                {% if date == values.0 %}
+                    <div>
+                        <p style="display:inline-block;">{{ comment.nickname}}</p>
+                        <p style="display:inline-block;">{{ comment.comment }}</p>
+                        <p style="display:inline-block;">{{ values.1 }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-        </table>
         {% else %}
-        <p>아직 코멘트가 없습니다! 첫번째로 코멘트를 남겨보세요!!</p>
+            <p>아직 코멘트가 없습니다! 첫번째로 코멘트를 남겨보세요!!</p>
         {% endif %}
     </div>
 

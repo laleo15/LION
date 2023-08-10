@@ -229,10 +229,22 @@ def update_questions(request,user):
     
 
     comment_list=Comment.objects.order_by('-create_date')[:10]
+    sendComment={}
+    date_list=[]
+    for comment in comment_list:
+        time = comment.create_date.strftime('%I:%M:%S %p')
+        date=comment.create_date.strftime('%Y년 %m월 %d일')
+        sendComment[comment]=[date,time]
+        date_list.append(date)
+    
+    send_date=list(set(date_list))
+
+
     context={
         'user':user,
         'sendDict':sendDict.items(),
-        'comment_list':comment_list,
+        'sendComment':sendComment.items(),
+        'date_list':send_date,
         'G':G,
         }
     
@@ -246,6 +258,7 @@ def update_comment(request):
 
     Cnickname=nickname+'('+generation+')'
     comment=request.POST.get('comment')
+
     create_date=timezone.now()
     
     C=Comment(nickname=Cnickname, comment=comment,create_date=create_date)
