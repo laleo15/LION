@@ -9,6 +9,7 @@ class Word(models.Model):
     origin=models.TextField()
     standard = models.CharField(max_length=200)
     count=models.IntegerField()
+    url=models.TextField()
     
     def __str__(self):
         return str(self.subject)

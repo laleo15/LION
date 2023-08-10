@@ -7,6 +7,9 @@
 <div>{{ word.generation }}</div>
 <div>{{ word.origin }}</div>
 <div>{{ word.standard }}</div>
+{%if word.url != "0"%}
+    <li><a href="{{ word.url }}" target="_blank">링크</a></li>
+{%endif%}
 <div>{{ ex.example }}</div>
 <div>{{ syno.synonym }}</div>
 
