@@ -3,20 +3,14 @@
 
 <form method="post" action="{% url 'oldmantest:login_after'%}">
     {% csrf_token %}
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     <div>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <label for="nickname">닉네임</label>
-        <input type="text" name="nickname" id="nickname"
-        value="{{form.nickname.value|default_if_none:''}}">
+        <input type="text" name="nickname" id="nickname">
     </div>
     <div>
-        <label for="password">세대</label>
-        <select name="generation">
-            <option value="none" selected>=== 선택 ===</option>
-            <option value="X세대">X세대(~1980)</option>
-            <option value="M세대">M세대(1981~1996)</option>
-            <option value="Z세대">Z세대(1997~)</option>
-        </select>
+        <label for="age">나이</label>
+        <input type="text" name="age" id="age">
     </div>
 
     <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
