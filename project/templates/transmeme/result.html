@@ -9,11 +9,24 @@
 
 
 
-<form action="{% url 'transmeme:translate' %}" method="POST">
+<form action="{% url 'transmeme:translate' %}" method="POST" id="translate-form">
     {% csrf_token %}
     <textarea name="content" id="content" rows="15" placeholder="단어를 입력하세요"></textarea>
     <input type="submit" value="번역하기">
 </form>
+
+<script>
+document.getElementById('content').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 엔터 키 이벤트의 기본 동작 취소
+        document.getElementById('translate-form').submit(); // 폼 제출
+    }
+});
+
+window.onload = function() {
+    document.getElementById('content').focus();
+};
+</script>
 
 <li><a href="{% url 'transmeme:translator' %}">초기화하기</a></li>
 

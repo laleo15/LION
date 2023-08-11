@@ -1,6 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Word,Synonym,Example
-# Create your views here.
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .serializers import WordSerializer,SynonymSerializer,ExampleSerializer
+from rest_framework.renderers import JSONRenderer
+
 
 def calculate_initial_sound(character):
     base_code = ord('가')
@@ -50,3 +56,20 @@ def detail(request, word_id):
      context = {'word': word,'syno':syno,'ex':ex}
      return render(request, 'dictionary/word_detail.html', context)
 
+@api_view(["GET"])
+def WordListAPI(request):
+    word_queryset = Word.objects.all()
+    synonym_queryset = Synonym.objects.all()
+    example_queryset = Example.objects.all()
+    
+    word_serializer = WordSerializer(word_queryset, many=True)
+    synonym_serializer = SynonymSerializer(synonym_queryset, many=True)
+    example_serializer = ExampleSerializer(example_queryset, many=True)
+    
+    data = {
+        'words': word_serializer.data,
+        'synonyms': synonym_serializer.data,
+        'examples': example_serializer.data
+    }
+    
+    return Response(data)
