@@ -49,6 +49,7 @@ ALLOWED_HOSTS = ['52.79.219.32']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework', 
     'dictionary.apps.DictionaryConfig',
     'mzquiz.apps.MzquizConfig',
     'oldmantest.apps.OldmantestConfig',
