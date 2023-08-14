@@ -7,5 +7,4 @@ app_name = 'transmeme'
 urlpatterns = [
     path('', views.main, name='translator'),
     path('translate/', views.translate, name='translate'),
-  
 ]
