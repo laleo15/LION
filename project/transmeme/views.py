@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from dictionary.models import Word, Synonym, Example
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import WordSerializer, SynonymSerializer, ExampleSerializer
+
 
 # Create your views here.
 def main(request):
@@ -34,3 +38,28 @@ def translate(request):
         "count": lookup
     }
     return render(request, 'transmeme/result.html', context)
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Word, Synonym, Example
+from .serializers import WordSerializer, SynonymSerializer, ExampleSerializer
+
+@api_view(['GET'])
+def get_word_detail(request, word_text):
+    word = Word.objects.get(subject=word_text)
+    word_serializer = WordSerializer(word)
+    
+    synonym = Synonym.objects.filter(word=word)
+    synonym_serializer = SynonymSerializer(synonym[0])
+    
+    example = Example.objects.filter(word=word)
+    example_serializer = ExampleSerializer(example[0])
+    
+    data = {
+        'word': word_serializer.data,
+        'synonym': synonym_serializer.data,
+        'example': example_serializer.data
+    }
+    
+    return Response(data)
