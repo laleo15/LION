@@ -40,9 +40,6 @@ def translate(request):
     return render(request, 'transmeme/result.html', context)
 
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .serializers import WordSerializer, SynonymSerializer, ExampleSerializer
 
 @api_view(['GET'])
 def get_word_detail(request, word_text):
