@@ -42,13 +42,6 @@ def translate(request):
     }
     return render(request, 'transmeme/result.html', context)
 
-
-<<<<<<< HEAD
-def main(request):
-    return render(request, 'transmeme/transmeme.html')
-=======
->>>>>>> 170be75d97b1e635d1fdb07c0b99971b897d383f
-
 @csrf_exempt
 @api_view(['POST'])
 def translate(request):
