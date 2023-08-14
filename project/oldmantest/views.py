@@ -194,14 +194,13 @@ def Qsetting_update(user,UserDict):
             elif user.generation == "Z세대":
                 q.RGZ+=1
         
-        q.Total=q.LGX+q.RGX+q.LGM+q.RGM+q.LGZ+q.RGZ
 
-        q.Plgx=round(q.LGX*100/q.Total)
-        q.Plgm=round(q.LGM*100/q.Total)
-        q.Plgz=round(q.LGZ*100/q.Total)
-        q.Prgx=round(q.RGX*100/q.Total)
-        q.Prgm=round(q.RGM*100/q.Total)
-        q.Prgz=round(q.RGZ*100/q.Total)
+        q.Plgx=round(q.LGX*100/(q.LGX+q.RGX))
+        q.Plgm=round(q.LGM*100/(q.LGM+q.RGM))
+        q.Plgz=round(q.LGZ*100/(q.LGZ+q.RGZ))
+        q.Prgx=round(q.RGX*100/(q.LGX+q.RGX))
+        q.Prgm=round(q.RGM*100/(q.LGM+q.RGM))
+        q.Prgz=round(q.RGZ*100/(q.LGZ+q.RGZ))
         user.save()
         q.save()
 
