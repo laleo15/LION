@@ -22,60 +22,69 @@ def translate(request):
             n = int(w.count)
             Word.objects.filter(subject=w).update(count = n + 1) # 검색 1회 증가시킴
             lookup=Word.objects.all().order_by('-count')[:10] # 검색횟수에 따른 딕셔너리 추가(순서정렬 후 앞에서부터 10개)
+            kk={}
+            for i in range(0,10):
+                key = f'key_{i+1}'
+                kk[key] =  lookup[i]
             context = {
                 "word": w,
                 "wordinput": wordinput,
                 'syno': synonym[0],
                 'ex': example[0],
-                "count": lookup
+                "count": kk
             } #context에 잘 넣어서 html로 쏴줌 
             return render(request, 'transmeme/result.html', context)
 
     # If no matching word is found, return this context 
     lookup=Word.objects.all().order_by('-count')[:10] #없을 경우에 대해서 동작 설명
+    kk={}
+    for i in range(0,10):
+        key = f'key_{i+1}'
+        kk[key] =  lookup[i]
+    
     context = {
         "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
         "wordinput": wordinput,
         'syno': "해당 없음",
         'ex': '해당 없음',
-        "count": lookup
+        "count": kk
     }
     return render(request, 'transmeme/result.html', context)
 
-@csrf_exempt
-@api_view(['POST'])
-def translate1(request):
-    if request.method == 'POST':
-        wordinput = request.POST.get('content')
-        try:
-            word = Word.objects.get(subject=wordinput)
-            synonym = Synonym.objects.filter(word=word)
-            example = Example.objects.filter(word=word)
-            n = int(word.count)
-            word.count = n + 1
-            word.save()
+# @csrf_exempt
+# @api_view(['POST'])
+# def translate1(request):
+#     if request.method == 'POST':
+#         wordinput = request.POST.get('content')
+#         try:
+#             word = Word.objects.get(subject=wordinput)
+#             synonym = Synonym.objects.filter(word=word)
+#             example = Example.objects.filter(word=word)
+#             n = int(word.count)
+#             word.count = n + 1
+#             word.save()
 
-            word_serializer = WordSerializer(word)
-            synonym_serializer = SynonymSerializer(synonym[0]) if synonym else None
-            example_serializer = ExampleSerializer(example[0]) if example else None
+#             word_serializer = WordSerializer(word)
+#             synonym_serializer = SynonymSerializer(synonym[0]) if synonym else None
+#             example_serializer = ExampleSerializer(example[0]) if example else None
 
-            context = {
-                "word": word_serializer.data,
-                "syno": synonym_serializer.data if synonym_serializer else "해당 없음",
-                "ex": example_serializer.data if example_serializer else "해당 없음",
-            }
-            return render(request, 'transmeme/result.html', context)
-        except Word.DoesNotExist:
-            context = {
-                "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
-                "syno": "해당 없음",
-                "ex": "해당 없음",
-            }
-            return render(request, 'transmeme/result.html', context)
+#             context = {
+#                 "word": word_serializer.data,
+#                 "syno": synonym_serializer.data if synonym_serializer else "해당 없음",
+#                 "ex": example_serializer.data if example_serializer else "해당 없음",
+#             }
+#             return render(request, 'transmeme/result.html', context)
+#         except Word.DoesNotExist:
+#             context = {
+#                 "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+#                 "syno": "해당 없음",
+#                 "ex": "해당 없음",
+#             }
+#             return render(request, 'transmeme/result.html', context)
 
-@csrf_exempt
-@api_view(['GET'])
-def get_rank(request):
-    words = Word.objects.all().order_by('-count')[:10]
-    word_list = [{"subject": word.subject} for word in words]
-    return Response(word_list)
+# @csrf_exempt
+# @api_view(['GET'])
+# def get_rank(request):
+#     words = Word.objects.all().order_by('-count')[:10]
+#     word_list = [{"subject": word.subject} for word in words]
+#     return Response(word_list)
