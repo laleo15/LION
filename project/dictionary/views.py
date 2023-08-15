@@ -4,11 +4,21 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import WordWithInitialSoundSerializer, SynonymSerializer, ExampleSerializer
 
+# def calculate_initial_sound(character):
+#     base_code = ord('가')
+#     code = ord(character) - base_code
+#     initial_sound_index = code // 28 // 21
+#     initial_sound = chr(initial_sound_index + 0x1100)
+#     return initial_sound
+
 def calculate_initial_sound(character):
-    base_code = ord('가')
-    code = ord(character) - base_code
-    initial_sound_index = code // 28 // 21
-    initial_sound = chr(initial_sound_index + 0x1100)
+    if '가' <= character <= '힣':
+        base_code = ord('가')
+        code = ord(character) - base_code
+        initial_sound_index = code // 28 // 21
+        initial_sound = chr(initial_sound_index + 0x1100)
+    else:
+        initial_sound = '#'
     return initial_sound
 
 def categorize_words_by_initial_sound(words):
