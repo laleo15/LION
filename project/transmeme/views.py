@@ -12,7 +12,7 @@ from rest_framework.response import Response
 def main(request):
     return render(request, 'transmeme/translator.html')
         
-def translate(request):
+def translate1(request):
     word1 = Word.objects.all() #데이터베이스 가져오기
     wordinput = request.POST.get(str('content')) #입력한 정보 가져오기 
     for w in word1: # 모든 데이터에 접근할 수 있도록 반복문 
