@@ -28,7 +28,11 @@ def main(request):
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     index=0
     count=0
-    context={'random_ten':random_ten,'index':index,'count':count}
+    context={
+        'random_ten':random_ten,
+        'index':index,
+        'count':count,
+        }
 
     return render(request, 'mzquiz/mainquiz.html',context)
 
@@ -39,18 +43,18 @@ def detail(request):
     random_ten = json.loads(data_received)
     index=int(request.POST.get('index'))
     count=int(request.POST.get('count'))
+
     choice=request.POST.get('choice')
 
     if choice=='1':
         count+=1
-    
 
     #10문제 다 풀면 mzquiz main화면으로 화면 전환
     if index==10:
         context={
             'count':count
         }
-        return render(request,'mzquiz:quiz_result.html',context)
+        return render(request,'mzquiz/quiz_result.html',context)
 
     quiz=QuizDB[random_ten[index]]
 
@@ -58,7 +62,8 @@ def detail(request):
     context = {
         'random_ten': random_ten,
         'index': index+1,
-        'quiz': quiz
+        'quiz': quiz,
+        'count':count,
     }
 
     return render(request, 'mzquiz/quiz_detail.html',context)
