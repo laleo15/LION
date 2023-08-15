@@ -9,6 +9,4 @@ urlpatterns = [
     path('generation/', views.list1, name='generation'),
     path('<int:word_id>/', views.detail, name='detail'),
     path('apitest/', views.WordListAPI),
-    # path('apitest/', views.SynonymSerializer),
-    # path('apitest/', views.WordListAPI),
 ]
