@@ -9,7 +9,7 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dictionary.models import Word, Synonym, Example
-from .serializers import WordSerializer, SynonymSerializer, ExampleSerializer,InputSerializer
+from .serializers import WordSerializer, SynonymSerializer, ExampleSerializer
 
 
 # Create your views here.
