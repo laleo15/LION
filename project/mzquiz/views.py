@@ -26,7 +26,7 @@ def quiz_setting():
             q.save()
     return 0
 
-
+@api_view(["GET","POST"])
 def main(request):
     quiz_setting()
 
@@ -34,15 +34,59 @@ def main(request):
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     index=0
     count=0
+    QuizDB=WordQuiz.objects.all()
+    quiz=QuizDB[0]
     context={
         'random_ten':random_ten,
         'index':index,
         'count':count,
+        'quiz':quiz,
         }
 
-    return render(request, 'mzquiz/mainquiz.html',context)
+    serializer=WordQuizSerializer(context)
+    return Response(serializer.data)
+    #return render(request, 'mzquiz/mainquiz.html',context)
 
 
+@api_view(["GET","POST"])
+def detailAPI(request):
+    QuizDB=WordQuiz.objects.all()
+    data_received=request.POST.get('random_ten')
+    random_ten = json.loads(data_received)
+    index=int(request.POST.get('index'))
+    count=int(request.POST.get('count'))
+
+    choice=request.POST.get('choice')
+    print("count: ",count)
+
+    if choice=='1':
+        count+=1
+
+    print("choice: ",choice)
+    print("count: ",count)
+    #10문제 다 풀면 mzquiz main화면으로 화면 전환
+    if index==10:
+        quiz=QuizDB[index]
+        index=100
+        #return render(request,'mzquiz/quiz_result.html',context)
+    else:
+        quiz=QuizDB[random_ten[index]]
+        index=index+1
+
+    #index+1을 하는 이유는 문제 0~9로 표현하지 않고, 문제 1~10로 표현하기 위해
+    context = {
+        'random_ten': random_ten,
+        'index': index,
+        'quiz': quiz,
+        'count':count,
+    }
+
+    serializer=WordQuizSerializer(context)
+    return Response(serializer.data)
+    #return render(request, 'mzquiz/quiz_detail.html',context)
+
+
+#위의 detailAPI 잘되면 할 필요 없는거
 def detail(request):
     QuizDB=WordQuiz.objects.all()
     data_received=request.POST.get('random_ten')
@@ -74,40 +118,3 @@ def detail(request):
 
     return render(request, 'mzquiz/quiz_detail.html',context)
 
-
-@api_view(["GET","POST"])
-def detailAPI(request):
-    QuizDB=WordQuiz.objects.all()
-    data_received=request.POST.get('random_ten')
-    random_ten = json.loads(data_received)
-    index=int(request.POST.get('index'))
-    count=int(request.POST.get('count'))
-
-    choice=request.POST.get('choice')
-    print("count: ",count)
-
-    if choice=='1':
-        count+=1
-
-    print("choice: ",choice)
-    print("count: ",count)
-    #10문제 다 풀면 mzquiz main화면으로 화면 전환
-    if index==10:
-        context={
-            'count':count
-        }
-        return render(request,'mzquiz/quiz_result.html',context)
-
-    quiz=QuizDB[random_ten[index]]
-
-    #index+1을 하는 이유는 문제 0~9로 표현하지 않고, 문제 1~10로 표현하기 위해
-    context = {
-        'random_ten': random_ten,
-        'index': index+1,
-        'quiz': quiz,
-        'count':count,
-    }
-
-    serializer=WordQuizSerializer(context)
-    return Response(serializer.data)
-    #return render(request, 'mzquiz/quiz_detail.html',context)

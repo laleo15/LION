@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from .models import WordQuiz
-import json
 
-class WordQuizSerializer(serializers.ModelSerializer):
-
+class WordQuizSerializer(serializers.Serializer):
     index=serializers.SerializerMethodField()
     count=serializers.SerializerMethodField()
     ten_quiz=serializers.SerializerMethodField()
@@ -37,5 +35,3 @@ class WordQuizSerializer(serializers.ModelSerializer):
             ten_quiz.append(serialized_quiz)
 
         return ten_quiz
-    
-    
