@@ -27,8 +27,8 @@ def main(request):
     random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     index=0
-
-    context={'random_ten':random_ten,'index':index}
+    count=0
+    context={'random_ten':random_ten,'index':index,'count':count}
 
     return render(request, 'mzquiz/mainquiz.html',context)
 
@@ -38,10 +38,19 @@ def detail(request):
     data_received=request.POST.get('random_ten')
     random_ten = json.loads(data_received)
     index=int(request.POST.get('index'))
+    count=int(request.POST.get('count'))
+    choice=request.POST.get('choice')
+
+    if choice=='1':
+        count+=1
+    
 
     #10문제 다 풀면 mzquiz main화면으로 화면 전환
     if index==10:
-        return redirect('mzquiz:startpage')
+        context={
+            'count':count
+        }
+        return render(request,'mzquiz:quiz_result.html',context)
 
     quiz=QuizDB[random_ten[index]]
 

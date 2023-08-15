@@ -44,7 +44,7 @@ def translate(request):
 
 @csrf_exempt
 @api_view(['POST'])
-def translate(request):
+def translate1(request):
     if request.method == 'POST':
         wordinput = request.POST.get('content')
         try:

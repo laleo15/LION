@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1> mzQuiz(구현 예정) </h1>
+    <form method="post" action="{% url 'mzquiz:startpage'%}">
+        {% csrf_token %}
+        <h1>내 점수는: {{count}}점</h1>
+
+        <button type="submit">홈으로</button>
+    </form>
+
+{% endblock %}
