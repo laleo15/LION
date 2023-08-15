@@ -12,7 +12,7 @@ from rest_framework.response import Response
 def main(request):
     return render(request, 'transmeme/translator.html')
         
-def translate1(request):
+def translate(request):
     word1 = Word.objects.all() #데이터베이스 가져오기
     wordinput = request.POST.get(str('content')) #입력한 정보 가져오기 
     for w in word1: # 모든 데이터에 접근할 수 있도록 반복문 
@@ -51,36 +51,36 @@ def translate1(request):
     }
     return render(request, 'transmeme/result.html', context)
 
-# @csrf_exempt
-# @api_view(['POST'])
-# def translate1(request):
-#     if request.method == 'POST':
-#         wordinput = request.POST.get('content')
-#         try:
-#             word = Word.objects.get(subject=wordinput)
-#             synonym = Synonym.objects.filter(word=word)
-#             example = Example.objects.filter(word=word)
-#             n = int(word.count)
-#             word.count = n + 1
-#             word.save()
+@csrf_exempt
+@api_view(['POST'])
+def translate1(request):
+    if request.method == 'POST':
+        wordinput = request.POST.get('content')
+        try:
+            word = Word.objects.get(subject=wordinput)
+            synonym = Synonym.objects.filter(word=word)
+            example = Example.objects.filter(word=word)
+            n = int(word.count)
+            word.count = n + 1
+            word.save()
 
-#             word_serializer = WordSerializer(word)
-#             synonym_serializer = SynonymSerializer(synonym[0]) if synonym else None
-#             example_serializer = ExampleSerializer(example[0]) if example else None
+            word_serializer = WordSerializer(word)
+            synonym_serializer = SynonymSerializer(synonym[0]) if synonym else None
+            example_serializer = ExampleSerializer(example[0]) if example else None
 
-#             context = {
-#                 "word": word_serializer.data,
-#                 "syno": synonym_serializer.data if synonym_serializer else "해당 없음",
-#                 "ex": example_serializer.data if example_serializer else "해당 없음",
-#             }
-#             return render(request, 'transmeme/result.html', context)
-#         except Word.DoesNotExist:
-#             context = {
-#                 "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
-#                 "syno": "해당 없음",
-#                 "ex": "해당 없음",
-#             }
-#             return render(request, 'transmeme/result.html', context)
+            context = {
+                "word": word_serializer.data,
+                "syno": synonym_serializer.data if synonym_serializer else "해당 없음",
+                "ex": example_serializer.data if example_serializer else "해당 없음",
+            }
+            return render(request, 'transmeme/result.html', context)
+        except Word.DoesNotExist:
+            context = {
+                "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+                "syno": "해당 없음",
+                "ex": "해당 없음",
+            }
+            return render(request, 'transmeme/result.html', context)
 
 # @csrf_exempt
 # @api_view(['GET'])
