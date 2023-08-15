@@ -3,7 +3,12 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion,Comment,Grade
 from django.utils import timezone
 import random,json
-from rest_framework import viewsets
+from rest_framework.renderers import JSONRenderer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.http import JsonResponse
+
 from .serializers import TestQuestionSerializer,MZUserSerializer,CommentSerializer,GradeSerializer
 
 
@@ -173,6 +178,7 @@ def test(request):
             'question':question
         }
     return render(request,'oldmantest/testpage.html',context)
+    #return JsonResponse(context)
 
 
 
