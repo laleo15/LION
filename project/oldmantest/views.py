@@ -3,6 +3,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import MZUser,TestQuestion,Comment,Grade
 from django.utils import timezone
 import random,json
+from rest_framework import viewsets
+from .serializers import TestQuestionSerializer,MZUserSerializer,CommentSerializer,GradeSerializer
+
 
 # Create your views here.
 
@@ -194,13 +197,26 @@ def Qsetting_update(user,UserDict):
             elif user.generation == "Z세대":
                 q.RGZ+=1
         
+        q.Total=q.Plgx+q.Plgm+q.Plgz+q.Prgx+q.Prgm+q.Prgz
 
-        q.Plgx=round(q.LGX*100/(q.LGX+q.RGX))
-        q.Plgm=round(q.LGM*100/(q.LGM+q.RGM))
-        q.Plgz=round(q.LGZ*100/(q.LGZ+q.RGZ))
-        q.Prgx=round(q.RGX*100/(q.LGX+q.RGX))
-        q.Prgm=round(q.RGM*100/(q.LGM+q.RGM))
-        q.Prgz=round(q.RGZ*100/(q.LGZ+q.RGZ))
+        divX=(q.LGX+q.RGX)
+        divM=(q.LGM+q.RGM)
+        divZ=(q.LGZ+q.RGZ)
+
+        if divX==0: #0으로 나눌 순 없으니까 그냥 대강 큰 수로 나누기
+            divX=1000
+        if divM==0:
+            divM=1000
+        if divZ==0:
+            divZ=1000
+
+        q.Plgx=round(q.LGX*100/divX)
+        q.Plgm=round(q.LGM*100/divM)
+        q.Plgz=round(q.LGZ*100/divZ)
+        q.Prgx=round(q.RGX*100/divX)
+        q.Prgm=round(q.RGM*100/divM)
+        q.Prgz=round(q.RGZ*100/divZ)
+
         user.save()
         q.save()
 

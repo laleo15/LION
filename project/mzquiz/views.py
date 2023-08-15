@@ -3,6 +3,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from .models import WordQuiz
 from django.contrib import messages
 import random,json
+from rest_framework import viewsets
+from .serializers import WordQuizSerializer
 # Create your views here.
 
 def quiz_setting():
