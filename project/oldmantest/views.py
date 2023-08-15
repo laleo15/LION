@@ -76,9 +76,9 @@ def login(request):
 
 @api_view(["GET", "POST"])
 def login_after(request):
-    nickname=request.POST.get('nickname')
-    age=request.POST.get('age')
-    index=int(request.POST.get('index'))
+    nickname=request.data.get('nickname')
+    age=request.data.get('age')
+    index=int(request.data.get('index'))
     
     #공백 예외처리
     if nickname=="":
@@ -149,17 +149,17 @@ def login_after(request):
 
 @api_view(["GET", "POST"])
 def test(request):
-    nickname=request.POST.get('nickname')
-    generation=request.POST.get('generation')
-    data_received=request.POST.get('random_ten')
+    nickname=request.data.get('nickname')
+    generation=request.data.get('generation')
+    data_received=request.data.get('random_ten')
 
-    index=int(request.POST.get('index'))
+    index=int(request.data.get('index'))
     user=get_object_or_404(MZUser,nickname=nickname)
     
     QDB=TestQuestion.objects.all()
 
     try:
-        selected=int(request.POST['choice'])
+        selected=int(request.data.get('choice'))
     except(KeyError):
         question=QDB[index-1]
         context={
@@ -289,11 +289,11 @@ def update_questions(request,user):
 
     
 def update_comment(request):
-    nickname=request.POST.get('nickname')
-    generation=request.POST.get('generation')
+    nickname=request.data.get('nickname')
+    generation=request.data.get('generation')
 
     Cnickname=nickname+'('+generation+')'
-    comment=request.POST.get('comment')
+    comment=request.data.get('comment')
 
     create_date=timezone.now()
     

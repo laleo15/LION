@@ -51,12 +51,12 @@ def main(request):
 @api_view(["GET","POST"])
 def detailAPI(request):
     QuizDB=WordQuiz.objects.all()
-    data_received=request.POST.get('random_ten')
+    data_received=request.data.get('random_ten')
     random_ten = json.loads(data_received)
-    index=int(request.POST.get('index'))
-    count=int(request.POST.get('count'))
+    index=int(request.data.get('index'))
+    count=int(request.data.get('count'))
 
-    choice=request.POST.get('choice')
+    choice=request.data.get('choice')
     print("count: ",count)
 
     if choice=='1':
@@ -89,12 +89,12 @@ def detailAPI(request):
 #위의 detailAPI 잘되면 할 필요 없는거
 def detail(request):
     QuizDB=WordQuiz.objects.all()
-    data_received=request.POST.get('random_ten')
+    data_received=request.data.get('random_ten')
     random_ten = json.loads(data_received)
-    index=int(request.POST.get('index'))
-    count=int(request.POST.get('count'))
+    index=int(request.data.get('index'))
+    count=int(request.data.get('count'))
 
-    choice=request.POST.get('choice')
+    choice=request.data.get('choice')
 
     if choice=='1':
         count+=1
