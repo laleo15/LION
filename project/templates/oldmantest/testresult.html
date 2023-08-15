@@ -13,8 +13,9 @@
     <p>특징3: {{G.Fthird}}</p>
 
     <br>
-    <form method="post" action="{%url 'oldmantest:update_comment'%}">
+    <form method="post" action="{%url 'oldmantest:update_comment'%}" id="comment_form">
         {% csrf_token %}
+        <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
         <input style="display:none;" type="text" name="nickname" id="nickname" value="{{user.nickname}}">
         <input style="display:none;" type="text" name="generation" id="generation" value="{{user.generation}}">
 
@@ -22,6 +23,19 @@
         <textarea name="comment" id="comment" rows="1"></textarea>
         <button type="submit">등록</button>
     </form>
+
+    <script>
+        document.getElementById('comment').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 엔터 키 이벤트의 기본 동작 취소
+                document.getElementById('comment_form').submit(); // 폼 제출
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('comment').focus();
+        };
+    </script>
 
     <br>
     <div class="realtime_comment">

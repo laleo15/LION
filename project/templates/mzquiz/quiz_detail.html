@@ -3,7 +3,7 @@
 <h1> Detail </h1>
 
 {{random_ten}}
-<form method="post" action="{% url 'mzquiz:detail'%}">
+<form method="post" action="{% url 'mzquiz:detailAPI'%}">
     {% csrf_token %}
     <p>{{index}}</p>
     <p>{{quiz.subject}}</p>
@@ -13,7 +13,7 @@
     
     <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
     <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
-    <input style="display:none;" type="text" name="count" id="count" value="{{count}}">
+    <input style="display:none;" type="text" name="count" id="count" value="{{index}}">
 </form>
 
 {% endblock %}

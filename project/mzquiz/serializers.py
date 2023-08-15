@@ -1,7 +1,41 @@
 from rest_framework import serializers
 from .models import WordQuiz
+import json
 
 class WordQuizSerializer(serializers.ModelSerializer):
+
+    index=serializers.SerializerMethodField()
+    count=serializers.SerializerMethodField()
+    ten_quiz=serializers.SerializerMethodField()
+    
+    subject = serializers.CharField(source='quiz.subject')  # Add this line
+    answer = serializers.CharField(source='quiz.answer')    # Add this line
+    wrong = serializers.CharField(source='quiz.wrong') 
+
     class Meta:
         model = WordQuiz
-        fields = '__all__'
+        fields = ['subject', 'answer', 'wrong','index','count','ten_quiz']
+
+
+    def get_index(self, obj):
+        return obj['index']
+
+    def get_count(self,obj):
+        return obj['count']
+    
+    def get_ten_quiz(self,obj):
+        QuizDB=WordQuiz.objects.all()
+        
+        ten_quiz=[]
+        for i in obj['random_ten']:
+            quiz=QuizDB[i]
+            serialized_quiz = {
+                'subject': quiz.subject,
+                'answer': quiz.answer,
+                'wrong': quiz.wrong,
+            }
+            ten_quiz.append(serialized_quiz)
+
+        return ten_quiz
+    
+    
