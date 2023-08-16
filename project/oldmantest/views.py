@@ -192,12 +192,11 @@ def update_questions(request,user):
         grade="뼛속MZ"
     G=get_object_or_404(Grade,grade=grade)
     
-
     comment_list=Comment.objects.order_by('-create_date')[:10]
     sendComment=[]
     date_list=[]
 
-    for k in range(10):
+    for k in range(len(comment_list)):
         comment=comment_list[k]
         time = comment.create_date.strftime('%I:%M:%S %p')
         date=comment.create_date.strftime('%Y년 %m월 %d일')
