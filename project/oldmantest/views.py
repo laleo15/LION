@@ -77,6 +77,8 @@ def login(request):
 def login_after(request):
     question_setting()
 
+    print(json.loads(request.body))
+
     nickname=request.data.get('nickname')
     age=request.data.get('age')
     index=0
@@ -116,6 +118,7 @@ def login_after(request):
 
 @api_view(["GET", "POST"])
 def test(request):
+    print(json.loads(request.body))
     nickname=request.data.get('nickname')
     generation=request.data.get('generation')
 
@@ -218,6 +221,7 @@ def update_questions(request,user):
 
 @api_view(["GET", "POST"])
 def update_comment(request):
+    print(json.loads(request.body))
     nickname=request.data.get('nickname')
     generation=request.data.get('generation')
 

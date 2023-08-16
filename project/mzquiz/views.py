@@ -50,6 +50,7 @@ def main(request):
 @api_view(["GET","POST"])
 def detail(request):
     QuizDB=WordQuiz.objects.all()
+    print(json.loads(request.body))
     try:
         index=int(request.data.get('index'))
         count=int(request.data.get('count'))
