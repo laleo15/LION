@@ -15,19 +15,20 @@ from .serializers import LoginSerializer ,TestSerializer,QupdateSerializer,TestQ
 # Create your views here.
 
 def question_setting():
-    # #test question 10개 생성
-    # for i in range(10):
-    #     contents="test"+str(i)+"번"
-    #     left=str(i)+"의 left"
-    #     right=str(i)+"의 right"
+    '''
+    #test question 10개 생성
+    for i in range(10):
+        contents="test"+str(i)+"번"
+        left=str(i)+"의 left"
+        right=str(i)+"의 right"
 
-    #     #이미 존재하는 문제는 삽입하지 않는다.
-    #     try:
-    #         Q=get_object_or_404(TestQuestion,contents=contents)
-    #     except Http404:
-    #         q=TestQuestion(contents=contents,left=left, right=right)
-    #         q.save()
-
+        #이미 존재하는 문제는 삽입하지 않는다.
+        try:
+            Q=get_object_or_404(TestQuestion,contents=contents)
+        except Http404:
+            q=TestQuestion(contents=contents,left=left, right=right)
+            q.save()
+    '''
     #Grade 3개 속성 지정
     grade1="요즘꼰대"
     F1one="요즘꼰대의 특징1"
@@ -61,6 +62,7 @@ def question_setting():
         
     return 0
 
+'''
 #없어져도 됨
 @api_view(["GET", "POST"])
 def login(request):
@@ -73,7 +75,7 @@ def login(request):
     serializer=LoginSerializer(context)
     #return Response(serializer.data)
     return render(request,'oldmantest/login.html',context)
-
+'''
 
 @api_view(["GET", "POST"])
 def login_after(request):
@@ -115,7 +117,6 @@ def login_after(request):
     }
     serializer=TestSerializer(context)
     return Response(serializer.data)
-    #return render(request,'oldmantest/testpage.html',context)
 
 
 @api_view(["GET", "POST"])
@@ -152,7 +153,6 @@ def test(request):
         user.save()
 
         if index==10:
-            print("??")
             Qsetting_update(user,user.questions.items())
             return update_questions(request,user)
 
@@ -165,7 +165,6 @@ def test(request):
         }
     serializer=TestSerializer(context)
     return Response(serializer.data)
-    #return render(request,'oldmantest/testpage.html',context)
 
 
 def update_questions(request,user):
@@ -221,7 +220,6 @@ def update_questions(request,user):
     
     serializer=QupdateSerializer(context)
     return Response(serializer.data)
-    #return render(request,'oldmantest/testresult.html',context)
 
 @api_view(["GET", "POST"])
 def update_comment(request):
