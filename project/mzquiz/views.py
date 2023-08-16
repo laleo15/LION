@@ -68,7 +68,7 @@ def detail(request):
     choice=request.data.get('choice')
     print("count: ",count)
 
-    if choice=='1':
+    if choice==1:
         count+=1
 
     print("choice: ",choice)
