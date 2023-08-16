@@ -41,14 +41,14 @@
     <div class="realtime_comment">
         <h3>실시간 COMMENT</h3>
         {% if date_list %}
-        {% for date in date_list %}
-            <h5>{{ date }}</h5>
-            {% for comment, values in sendComment %}
-                {% if date == values.0 %}
+        {% for Ldate in date_list %}
+            <h5>{{ Ldate }}</h5>
+            {% for comment in sendComment %}
+                {% if Ldate == comment.date %}
                     <div>
                         <p style="display:inline-block;">{{ comment.nickname}}</p>
-                        <p style="display:inline-block;">{{ comment.comment }}</p>
-                        <p style="display:inline-block;">{{ values.1 }}</p>
+                        <p style="display:inline-block;">{{ comment.content }}</p>
+                        <p style="display:inline-block;">{{ comment.time }}</p>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -62,26 +62,26 @@
     <div class="statistics">
         <h3>통계</h3>
         <table>
-            {% for key, values in sendDict %}
+            {% for question in sendDict %}
                 <tr>
-                    <td>문제 {{forloop.counter}}번, 사용자 선택: {{ values.0}}</td>
+                    <td>문제 {{forloop.counter}}번, 사용자 선택: {{ question.select }}</td>
                     <td>O 선택</td>
                     <td>X 선택</td>
                 </tr>
                 <tr>
                     <td>X세대</td>
-                    <td>{{values.1.Plgx}}%</td>
-                    <td>{{values.1.Prgx}}%</td>
+                    <td>{{question.question_info.Plgx}}%</td>
+                    <td>{{question.question_info.Prgx}}%</td>
                 </tr>
                 <tr>
                     <td>M세대</td>
-                    <td>{{values.1.Plgm}}%</td>
-                    <td>{{values.1.Prgm}}%</td>
+                    <td>{{question.question_info.Plgm}}%</td>
+                    <td>{{question.question_info.Prgm}}%</td>
                 </tr>
                 <tr>
                     <td>Z세대</td>
-                    <td>{{values.1.Plgz}}%</td>
-                    <td>{{values.1.Prgz}}%</td>
+                    <td>{{question.question_info.Plgz}}%</td>
+                    <td>{{question.question_info.Prgz}}%</td>
                 </tr>
             {% endfor %}
         </table>

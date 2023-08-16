@@ -9,7 +9,7 @@ class MZUserSerializer(serializers.ModelSerializer):
 class TestQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestQuestion
-        fields = ['contents', 'left', 'right']
+        fields = '__all__'
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,12 +39,11 @@ class TestSerializer(serializers.Serializer):
     user=MZUserSerializer() 
 
     class Meta:
-        fields=[
+        fields=(
             'question',
-            'user'
-            'error_message',
+            'user',
             'index',
-        ]
+        )
 
     def get_index(self, obj):
         return obj['index']
@@ -67,19 +66,18 @@ class QupdateSerializer(serializers.Serializer):
     grade=GradeSerializer()
 
     class Meta:
-        fields=[
-            'user'
+        fields=(
+            'user',
             'date_list',
             'QuestionList',
             'CommentList',
             'grade',
-        ]
+        )
 
     def get_QuestionList(self,obj):
         return obj['sendDict']
     
     def get_CommentList(self, obj):
-        
         return obj['sendComment']
 
     
