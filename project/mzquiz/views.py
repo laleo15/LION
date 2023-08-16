@@ -28,9 +28,9 @@ def quiz_setting():
 
 @api_view(["GET","POST"])
 def main(request):
-    quiz_setting()
+    #quiz_setting()
 
-    random_ten=random.sample(range(100),10) #100개문제에서 random하게 10개의 문제 추출
+    random_ten=random.sample(range(50),10) #100개문제에서 random하게 10개의 문제 추출
     #추후에 데이터베이스에는 문제 0~99번으로 등록 
     index=0
     count=0

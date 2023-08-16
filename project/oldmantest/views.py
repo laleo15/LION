@@ -13,18 +13,18 @@ from .serializers import LoginSerializer ,TestSerializer,QupdateSerializer,TestQ
 # Create your views here.
 
 def question_setting():
-    #test question 10개 생성
-    for i in range(10):
-        contents="test"+str(i)+"번"
-        left=str(i)+"의 left"
-        right=str(i)+"의 right"
+    # #test question 10개 생성
+    # for i in range(10):
+    #     contents="test"+str(i)+"번"
+    #     left=str(i)+"의 left"
+    #     right=str(i)+"의 right"
 
-        #이미 존재하는 문제는 삽입하지 않는다.
-        try:
-            Q=get_object_or_404(TestQuestion,contents=contents)
-        except Http404:
-            q=TestQuestion(contents=contents,left=left, right=right)
-            q.save()
+    #     #이미 존재하는 문제는 삽입하지 않는다.
+    #     try:
+    #         Q=get_object_or_404(TestQuestion,contents=contents)
+    #     except Http404:
+    #         q=TestQuestion(contents=contents,left=left, right=right)
+    #         q.save()
 
     #Grade 3개 속성 지정
     grade1="요즘꼰대"
