@@ -8,7 +8,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import JsonResponse
-
 from .serializers import LoginSerializer ,TestSerializer,QupdateSerializer
 
 # Create your views here.
@@ -91,8 +90,11 @@ def login_after(request):
     else:
         generation="Z"
     
-    user=MZUser(nickname=nickname,generation=generation)
-    
+    try:
+        user=get_object_or_404(MZUser,nickname=nickname)
+    except:
+        user = MZUser.objects.create(nickname=nickname,generation=generation)
+
     #User가 있으면 받아오고, 없으면 새로 생성한다.
     #단 원래 사용자가 있던, 없던 문제는 접속할때마다 새로운 문제를 풀 수 있게 하기 위해서 random으로 계속 갱신해준다.
 
@@ -109,8 +111,8 @@ def login_after(request):
         'question':question,
     }
     serializer=TestSerializer(context)
-    #return Response(serializer.data)
-    return render(request,'oldmantest/testpage.html',context)
+    return Response(serializer.data)
+    #return render(request,'oldmantest/testpage.html',context)
 
 
 @api_view(["GET", "POST"])
