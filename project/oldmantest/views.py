@@ -128,12 +128,9 @@ def test(request):
 
     index=int(request.data.get('index'))
     user=get_object_or_404(MZUser,nickname=nickname)
+
     
     QDB=TestQuestion.objects.all()
-
-    if index==10:
-        Qsetting_update(user,user.questions.items())
-        return update_questions(request,user)
 
     try:
         selected=int(request.data.get('choice'))
@@ -154,6 +151,11 @@ def test(request):
 
         user.questions=selected_Q
         user.save()
+
+        if index==10:
+            print("??")
+            Qsetting_update(user,user.questions.items())
+            return update_questions(request,user)
 
         question=QDB[index]
 
