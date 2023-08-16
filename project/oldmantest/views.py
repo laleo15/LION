@@ -131,6 +131,10 @@ def test(request):
     
     QDB=TestQuestion.objects.all()
 
+    if index==10:
+        Qsetting_update(user,user.questions.items())
+        return update_questions(request,user)
+
     try:
         selected=int(request.data.get('choice'))
     except(KeyError):
@@ -150,10 +154,6 @@ def test(request):
 
         user.questions=selected_Q
         user.save()
-
-        if index==10:
-            Qsetting_update(user,user.questions.items())
-            return update_questions(request,user)
 
         question=QDB[index]
 
