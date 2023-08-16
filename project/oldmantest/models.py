@@ -9,7 +9,7 @@ class TestQuestion(models.Model):
 
     LGX=models.IntegerField(default=0) #~1980
     Plgx=models.IntegerField(default=0) #~1980
-    RGX=models.IntegerField(default=0) #~1980
+    RGX=models.IntegerField(default=0) 
     Prgx=models.IntegerField(default=0) #~1980
 
     LGM=models.IntegerField(default=0) #1981~1996

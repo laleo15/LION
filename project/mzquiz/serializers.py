@@ -6,8 +6,8 @@ class WordQuizSerializer(serializers.Serializer):
     count=serializers.SerializerMethodField()
     ten_quiz=serializers.SerializerMethodField()
     
-    subject = serializers.CharField(source='quiz.subject')  # Add this line
-    answer = serializers.CharField(source='quiz.answer')    # Add this line
+    subject = serializers.CharField(source='quiz.subject')  
+    answer = serializers.CharField(source='quiz.answer')    
     wrong = serializers.CharField(source='quiz.wrong') 
 
     class Meta:

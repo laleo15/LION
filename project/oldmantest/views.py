@@ -60,6 +60,7 @@ def question_setting():
         
     return 0
 
+#없어져도 됨
 @api_view(["GET", "POST"])
 def login(request):
     question_setting()
@@ -70,37 +71,18 @@ def login(request):
         'error_message':""
     }
     serializer=LoginSerializer(context)
-    return Response(serializer.data)
-    #return render(request,'oldmantest/login.html',context)
+    #return Response(serializer.data)
+    return render(request,'oldmantest/login.html',context)
 
 
 @api_view(["GET", "POST"])
 def login_after(request):
+    question_setting()
+
     nickname=request.data.get('nickname')
     age=request.data.get('age')
-    index=int(request.data.get('index'))
+    index=0
     
-    #공백 예외처리
-    if nickname=="":
-        error_message="닉네임을 입력하지 않았습니다"
-        context={
-            'index':index,
-            'error_message':error_message
-        }
-        serializer=LoginSerializer(context)
-        return Response(serializer.data)
-        #return render(request,"oldmantest/login.html",context)
-
-    if age=="":
-        error_message="나이를 입력하지 않았습니다"
-        context={
-            'index':index,
-            'error_message':error_message
-        }
-        serializer=LoginSerializer(context)
-        return Response(serializer.data)
-        #return render(request,"oldmantest/login.html",context)
-
     #나이 -> 세대 변환
     if int(age)>=43:
         generation="X"
@@ -109,22 +91,7 @@ def login_after(request):
     else:
         generation="Z"
     
-
-    #아이디 중복 예외처리
-    try:
-        user=get_object_or_404(MZUser,nickname=nickname)
-        user.questions={}
-        if user.generation!=generation:
-            error_message="이미 존재하는 닉네임입니다!"
-            context={
-                'index':index,
-                'error_message':error_message
-            }
-            serializer=LoginSerializer(context)
-            return Response(serializer.data)
-            #return render(request,"oldmantest/login.html",context)
-    except Http404:
-        user=MZUser(nickname=nickname,generation=generation)
+    user=MZUser(nickname=nickname,generation=generation)
     
     #User가 있으면 받아오고, 없으면 새로 생성한다.
     #단 원래 사용자가 있던, 없던 문제는 접속할때마다 새로운 문제를 풀 수 있게 하기 위해서 random으로 계속 갱신해준다.
@@ -140,11 +107,10 @@ def login_after(request):
         'user':user,
         'index':index+1,
         'question':question,
-        'error_message':"",
     }
     serializer=TestSerializer(context)
-    return Response(serializer.data)
-    #return render(request,'oldmantest/testpage.html',context)
+    #return Response(serializer.data)
+    return render(request,'oldmantest/testpage.html',context)
 
 
 @api_view(["GET", "POST"])
@@ -189,7 +155,6 @@ def test(request):
             'user':user,
             'index':index+1,
             'question':question,
-            "error_message":""
         }
     serializer=TestSerializer(context)
     return Response(serializer.data)
@@ -241,14 +206,17 @@ def Qsetting_update(user,UserDict):
         q.save()
 
 
-@api_view(["GET", "POST"])
 def update_questions(request,user):
     QList=TestQuestion.objects.all()
-    sendDict={}
+    sendDict=[]
     selected_Q={}
     for key in user.questions.keys():
         k=int(key)
-        sendDict[k]=[user.questions[key],QList[k]]
+        question_data={
+            "select":user.questions[key],
+            "question_info":QList[k]
+            }
+        sendDict.append(question_data)
         selected_Q[int(key)]=user.questions[key]
     
     user.questions=selected_Q
@@ -264,23 +232,30 @@ def update_questions(request,user):
     
 
     comment_list=Comment.objects.order_by('-create_date')[:10]
-    sendComment={}
+    sendComment=[]
     date_list=[]
-    for comment in comment_list:
+
+    for k in range(10):
+        comment=comment_list[k]
         time = comment.create_date.strftime('%I:%M:%S %p')
         date=comment.create_date.strftime('%Y년 %m월 %d일')
-        sendComment[comment]=[date,time]
+        comment_data={
+            'nickname':comment.nickname,
+            'content':comment.comment,
+            'time':time,
+            'date':date
+            }
+        sendComment.append(comment_data)
         date_list.append(date)
-    
-    send_date=list(set(date_list))
 
+    send_date=list(set(date_list))
 
     context={
         'user':user,
-        'sendDict':sendDict.items(),
-        'sendComment':sendComment.items(),
+        'sendDict':sendDict,
+        'sendComment':sendComment,
         'date_list':send_date,
-        'G':G,
+        'grade':G,
         }
     
     serializer=QupdateSerializer(context)

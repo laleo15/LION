@@ -44,8 +44,8 @@ def main(request):
         }
 
     serializer=WordQuizSerializer(context)
-    return Response(serializer.data)
-    #return render(request, 'mzquiz/mainquiz.html',context)
+    #return Response(serializer.data)
+    return render(request, 'mzquiz/mainquiz.html',context)
 
 
 @api_view(["GET","POST"])
@@ -65,13 +65,13 @@ def detailAPI(request):
     print("choice: ",choice)
     print("count: ",count)
     #10문제 다 풀면 mzquiz main화면으로 화면 전환
-    if index==10:
-        quiz=QuizDB[index]
-        index=100
-        #return render(request,'mzquiz/quiz_result.html',context)
-    else:
+    if index<10:
         quiz=QuizDB[random_ten[index]]
         index=index+1
+    else:
+        quiz=QuizDB[0]
+        index=100
+        #return render(request,'mzquiz/quiz_result.html',context)
 
     #index+1을 하는 이유는 문제 0~9로 표현하지 않고, 문제 1~10로 표현하기 위해
     context = {
@@ -87,6 +87,7 @@ def detailAPI(request):
 
 
 #위의 detailAPI 잘되면 할 필요 없는거
+@api_view(["GET","POST"])
 def detail(request):
     QuizDB=WordQuiz.objects.all()
     data_received=request.data.get('random_ten')
@@ -94,10 +95,16 @@ def detail(request):
     index=int(request.data.get('index'))
     count=int(request.data.get('count'))
 
-    choice=request.data.get('choice')
+    print("------------",index,"번------------")
+    print("선택 전 count: ",count)
 
-    if choice=='1':
+    choice = request.GET.get('choice')
+    if choice=="1":
         count+=1
+    elif choice=="2":
+        count=count
+
+    print("선택 후 count: ",count)
 
     #10문제 다 풀면 mzquiz main화면으로 화면 전환
     if index==10:
@@ -115,6 +122,7 @@ def detail(request):
         'quiz': quiz,
         'count':count,
     }
-
+    serializer=WordQuizSerializer(context)
+    #return Response(serializer.data)
     return render(request, 'mzquiz/quiz_detail.html',context)
 

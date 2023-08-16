@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h1> mzQuiz(구현 예정) </h1>
-    <form method="post" action="{% url 'mzquiz:detailAPI'%}">
+    <form method="post" action="{% url 'mzquiz:detail'%}">
         {% csrf_token %}
         <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
         <input style="display:none;" type="text" name="index" id="index" value="{{index}}">

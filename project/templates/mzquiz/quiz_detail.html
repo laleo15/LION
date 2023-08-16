@@ -3,17 +3,19 @@
 <h1> Detail </h1>
 
 {{random_ten}}
-<form method="post" action="{% url 'mzquiz:detailAPI'%}">
-    {% csrf_token %}
-    <p>{{index}}</p>
-    <p>{{quiz.subject}}</p>
+<p>{{index}}</p>
+<p>{{quiz.subject}}</p>
 
-    <button type="submit" onclick="alert('정답입니다!')" name="choice" value="1">{{quiz.answer}}</button>
-    <button type="submit" onclick="alert('오답입니다!')" name="choice" value="2">{{quiz.wrong}}</button>
+<form method="post" action="{% url 'mzquiz:detail'%}">
+    {% csrf_token %}
+
+    <button type="submit" name="choice" value="1">{{quiz.answer}}</button>
+    <button type="submit" name="choice" value="2">{{quiz.wrong}}</button>
     
     <input style="display:none;" type="text" name="random_ten" id="random_ten" value="{{random_ten}}">
     <input style="display:none;" type="text" name="index" id="index" value="{{index}}">
     <input style="display:none;" type="text" name="count" id="count" value="{{index}}">
+
 </form>
 
 {% endblock %}

@@ -1,38 +1,47 @@
 from rest_framework import serializers
 from .models import TestQuestion,MZUser, Comment,Grade
 
+class MZUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MZUser
+        fields ='__all__'
+
+class TestQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TestQuestion
+        fields = ['contents', 'left', 'right']
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Comment
+        fields='__all__'
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Grade
+        fields='__all__'
 
 class LoginSerializer(serializers.Serializer):
     index=serializers.SerializerMethodField()
-    error_message=serializers.SerializerMethodField()
 
     def get_index(self, obj):
         return obj['index']
 
-    def get_error_message(self,obj):
-        return obj['error_message']
 
-class TestSerializer(serializers.ModelSerializer):
+class TestSerializer(serializers.Serializer):
     index=serializers.SerializerMethodField()
-    error_message=serializers.CharField(source='error_message',default="")
 
     #question
-    contents=serializers.CharField(source='question.contents')
-    left=serializers.CharField(source='question.left')
-    right=serializers.CharField(source='question.right')
+    question=TestQuestionSerializer()
 
     #user
-    nickname=serializers.CharField(source='user.nickname')
-    generation=serializers.CharField(source='user.generation')
+    user=MZUserSerializer() 
 
     class Meta:
-        model=MZUser,TestQuestion
         fields=[
-            'contents',
-            'left',
-            'right',
-            'nickname',
-            'generation',
+            'question',
+            'user'
             'error_message',
             'index',
         ]
@@ -40,34 +49,39 @@ class TestSerializer(serializers.ModelSerializer):
     def get_index(self, obj):
         return obj['index']
 
-    def get_error_message(self,obj):
-        return obj['error_message']
 
-
-
-class QupdateSerializer(serializers.ModelSerializer):
+class QupdateSerializer(serializers.Serializer):
     #문제별 세대 퍼센테이지 출력
-    QuestionList=serializers.JSONField(source='sendDict')
+    QuestionList=serializers.SerializerMethodField()
 
     #실시간 10개 Comment 리스트 출력
-    CommentList=serializers.JSONField(source='sendComment')
+    CommentList=serializers.SerializerMethodField()
 
     #실시간 comment에 있는 list 출력
-    date_list=serializers.JSONField(source='date_list')
+    date_list=serializers.SerializerMethodField()
 
     #user
-    nickname=serializers.CharField(source='user.nickname')
-    generation=serializers.CharField(source='user.generation')
+    user=MZUserSerializer()
 
     #Grade
-    grade=serializers.CharField(source='G')
+    grade=GradeSerializer()
 
     class Meta:
-        model=MZUser,Grade,Comment
         fields=[
-            'nickname',
-            'generation',
+            'user'
+            'date_list',
             'QuestionList',
             'CommentList',
             'grade',
         ]
+
+    def get_QuestionList(self,obj):
+        return obj['sendDict']
+    
+    def get_CommentList(self, obj):
+        
+        return obj['sendComment']
+
+    
+    def get_date_list(self,obj):
+        return obj['date_list']
