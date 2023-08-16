@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Word, Synonym, Example
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import WordWithInitialSoundSerializer, SynonymSerializer, ExampleSerializer
+from .serializers import WordWithInitialSoundSerializer, WordSerializer, SynonymSerializer, ExampleSerializer
 
 # def calculate_initial_sound(character):
 #     base_code = ord('가')
@@ -77,3 +77,21 @@ def detail(request, word_id):
     ex = Example.objects.filter(word=word)
     context = {'word': word, 'syno': syno, 'ex': ex}
     return render(request, 'dictionary/word_detail.html', context)
+
+
+@api_view(['GET'])
+def detail_serialized(request, word_id):
+    word = get_object_or_404(Word, id=word_id)
+    syno = Synonym.objects.filter(word=word)
+    ex = Example.objects.filter(word=word)
+
+    word_serializer = WordSerializer(word)
+    syno_serializer = SynonymSerializer(syno, many=True) if syno else None
+    ex_serializer = ExampleSerializer(ex, many=True) if ex else None
+
+    serialized_data = {
+        "word": word_serializer.data,
+        "syno": syno_serializer.data if syno_serializer else [],
+        "ex": ex_serializer.data if ex_serializer else [],
+    }
+    return Response(serialized_data)
