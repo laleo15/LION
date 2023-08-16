@@ -62,6 +62,7 @@ def detail(request):
         count=0
     else:
         data_received=request.data.get('random_ten')
+        print(data_received)
         random_ten = json.loads(data_received)
 
     choice=request.data.get('choice')
