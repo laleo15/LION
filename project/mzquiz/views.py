@@ -44,7 +44,7 @@ def main(request):
 
     # serializer=WordQuizSerializer(context)
     # #return Response(serializer.data)
-    return render(request, 'mzquiz/mainquiz.html',context)
+    return render(request, 'mzquiz/mainquiz.html')
 
 
 @api_view(["GET","POST"])
