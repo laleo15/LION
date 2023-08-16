@@ -10,9 +10,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 from .serializers import LoginSerializer ,TestSerializer,QupdateSerializer,TestQuestionSerializer
 
-import logging
 
-logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -81,7 +79,7 @@ def login(request):
 def login_after(request):
     question_setting()
 
-    logger.debug('Received data: %s', json.loads(request.body))
+    print(request.data)
 
     nickname=request.data.get('nickname')
     age=request.data.get('age')
@@ -122,7 +120,9 @@ def login_after(request):
 
 @api_view(["GET", "POST"])
 def test(request):
-    logger.debug('Received data: %s', json.loads(request.body))
+
+    print(request.data)
+
     nickname=request.data.get('nickname')
     generation=request.data.get('generation')
 
@@ -225,8 +225,9 @@ def update_questions(request,user):
 
 @api_view(["GET", "POST"])
 def update_comment(request):
-    logger.debug('Received data: %s', json.loads(request.body))
-    
+
+    print(request.data)
+
     nickname=request.data.get('nickname')
     generation=request.data.get('generation')
 

@@ -10,9 +10,6 @@ from rest_framework.views import APIView
 
 from .serializers import WordQuizSerializer
 
-import logging
-
-logger = logging.getLogger(__name__)
 
 def quiz_setting():
     #quiz question 100개 생성
@@ -52,8 +49,10 @@ def main(request):
 
 @api_view(["GET","POST"])
 def detail(request):
+
+    print(request.data)
+
     QuizDB=WordQuiz.objects.all()
-    logger.debug('Received data: %s', json.loads(request.body))
     try:
         index=int(request.data.get('index'))
         count=int(request.data.get('count'))
