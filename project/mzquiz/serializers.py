@@ -5,6 +5,7 @@ class WordQuizSerializer(serializers.Serializer):
     index=serializers.SerializerMethodField()
     count=serializers.SerializerMethodField()
     ten_quiz=serializers.SerializerMethodField()
+    random_ten=serializers.SerializerMethodField()
     
     subject = serializers.CharField(source='quiz.subject')  
     answer = serializers.CharField(source='quiz.answer')    
@@ -20,6 +21,9 @@ class WordQuizSerializer(serializers.Serializer):
 
     def get_count(self,obj):
         return obj['count']
+
+    def get_random_ten(self, obj):
+        return obj['random_ten']
     
     def get_ten_quiz(self,obj):
         QuizDB=WordQuiz.objects.all()
