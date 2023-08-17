@@ -62,7 +62,7 @@ def question_setting():
         
     return 0
 
-'''
+
 #없어져도 됨
 @api_view(["GET", "POST"])
 def login(request):
@@ -75,7 +75,6 @@ def login(request):
     serializer=LoginSerializer(context)
     #return Response(serializer.data)
     return render(request,'oldmantest/login.html',context)
-'''
 
 @api_view(["GET", "POST"])
 def login_after(request):
