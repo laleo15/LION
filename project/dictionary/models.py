@@ -8,7 +8,7 @@ class Word(models.Model):
     generation = models.CharField(max_length=100)
     origin=models.TextField()
     standard = models.CharField(max_length=200)
-    count=models.IntegerField()
+    count=models.IntegerField(default=0)
     url=models.TextField()
     
     def __str__(self):
