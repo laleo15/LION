@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='Synonym',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('synonym', models.CharField(max_length=200)),
+                ('synonym', models.CharField(max_length=200,default="유의어가 존재하지 않습니다..")),
                 ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dictionary.word')),
             ],
         ),
@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
             name='Example',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('example', models.TextField()),
+                ('example', models.TextField(default="해당 단어를 문장으로 만들 수 없습니다..")),
                 ('word', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='dictionary.word')),
             ],
         ),
