@@ -10,7 +10,6 @@ from rest_framework.views import APIView
 
 from .serializers import WordQuizSerializer
 
-'''
 def quiz_setting():
     #quiz question 100개 생성
     for i in range(100):
@@ -45,7 +44,7 @@ def main(request):
     serializer=WordQuizSerializer(context)
     #return Response(serializer.data)
     return render(request, 'mzquiz/mainquiz.html')
-'''
+
 
 
 @api_view(["GET","POST"])
