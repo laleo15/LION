@@ -31,9 +31,9 @@ def question_setting():
     '''
     #Grade 3개 속성 지정
     grade1="요즘꼰대"
-    F1one="요즘꼰대의 특징1"
-    F1two="요즘꼰대의 특징2"
-    F1third="요즘꼰대의 특징3"
+    F1one="가르치는 것을 좋아한다."
+    F1two="\"요즘 애들은~\"이라는 말을 자주 한다."
+    F1third="자기 스타일을 강요한다."
     try:
         G=get_object_or_404(Grade,grade=grade1)
     except Http404:
@@ -41,9 +41,9 @@ def question_setting():
         g.save()
 
     grade2="킹반인"
-    F2one="킹반인의 특징1"
-    F2two="킹반인의 특징2"
-    F2third="킹반인의 특징3"
+    F2one="묵직한 돌직구 표현을 선호한다."
+    F2two="본인은 꼭 필요한 말만 한다고 생각한다."
+    F2third="인간관계에서 선을 긋는다는 인상을 주는 경우가 많다."
     try:
         G=get_object_or_404(Grade,grade=grade2)
     except Http404:
@@ -51,9 +51,9 @@ def question_setting():
         g.save()
 
     grade3="뼛속MZ"
-    F3one="뼛속MZ의 특징1"
-    F3two="뼛속MZ의 특징2"
-    F3third="뼛속MZ의 특징3"
+    F3one="자신의 취향과 개성을 중요시하고 개인주의성향을 가진다.(누군가는 이기주의라고 한다)"
+    F3two="워라벨의 영역을 분명시한다.(업무와 사생활은 뚜렷하게 구분한다, 카카오톡이 업무용으로 쓰이면 스트레스를 받는다)"
+    F3third="내일보다는 오늘을, 안정보다는 리스크를 추구한다."
     try:
         G=get_object_or_404(Grade,grade=grade3)
     except Http404:
