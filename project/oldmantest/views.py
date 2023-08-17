@@ -151,7 +151,7 @@ def test(request):
         user.questions=selected_Q
         user.save()
 
-        if index==10:
+        if index>=10:
             Qsetting_update(user,user.questions.items())
             return update_questions(request,user)
 
