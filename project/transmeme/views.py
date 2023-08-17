@@ -25,7 +25,7 @@ def translate(request):
     
     for w in word1: # 모든 데이터에 접근할 수 있도록 반복문 
         similarity = fuzz.partial_ratio(wordinput, w.subject)  # 입력한 단어와 데이터베이스 단어의 유사도 계산
-        if similarity >= 70:  # 유사도가 70 이상인 경우를 선택 (임의로 설정)
+        if similarity >= 50:  # 유사도가 70 이상인 경우를 선택 (임의로 설정)
             matching_words.append((w, similarity))  # 유사한 단어를 리스트에 추가
     
     if matching_words:  # 유사한 단어가 하나 이상 있는 경우
@@ -68,7 +68,7 @@ def translate_api(request):
         matching_words = []
         for w in Word.objects.all():
             similarity = fuzz.partial_ratio(wordinput, w.subject)
-            if similarity >= 70:
+            if similarity >= 50:
                 matching_words.append((w, similarity))
         
         if matching_words:
