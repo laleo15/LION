@@ -50,6 +50,9 @@ class TestSerializer(serializers.Serializer):
 
 
 class QupdateSerializer(serializers.Serializer):
+    #결과페이지라는 신호 : index==11
+    index=serializers.SerializerMethodField()
+
     #문제별 세대 퍼센테이지 출력
     QuestionList=serializers.SerializerMethodField()
 
@@ -67,12 +70,16 @@ class QupdateSerializer(serializers.Serializer):
 
     class Meta:
         fields=(
+            'index',
             'user',
             'date_list',
             'QuestionList',
             'CommentList',
             'grade',
         )
+
+    def get_index(self, obj):
+        return obj['index']
 
     def get_QuestionList(self,obj):
         return obj['sendDict']

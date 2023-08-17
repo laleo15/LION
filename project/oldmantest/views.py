@@ -210,7 +210,10 @@ def update_questions(request,user):
 
     send_date=list(set(date_list))
 
+    index=11 #결과 페이지로 넘어가라는 신호
+
     context={
+        'index':index,
         'user':user,
         'sendDict':sendDict,
         'sendComment':sendComment,
