@@ -190,7 +190,7 @@ def update_questions(request,user):
         grade="뼛속MZ"
     G=get_object_or_404(Grade,grade=grade)
     
-    comment_list=Comment.objects.order_by('-create_date')[:10]
+    comment_list=Comment.objects.all().order_by('-create_date')[:10]
     sendComment=[]
     date_list=[]
 
