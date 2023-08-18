@@ -60,7 +60,6 @@ def translate(request):
 def translate_api(request):
     data = request.data
     wordinput = data.get('content')
-    # print(wordinput)
     
     word_match = Word.objects.filter(subject=wordinput).first()
     if not word_match:
@@ -77,14 +76,37 @@ def translate_api(request):
         else:
             lookup = Word.objects.all().order_by('-count')[:10]
             context = {
-                "word": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+                "word": {
+                    "subject": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+                    "meaning": "",
+                    "standard": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+                    "count": 0,
+                },
                 "wordinput": wordinput,
                 'syno': "해당 없음",
                 'ex': '해당 없음',
                 "count": WordSerializer(lookup, many=True).data,
             }
-            # print(context)
             return Response(context)
+    
+    synonym = Synonym.objects.filter(word=word_match).first()
+    example = Example.objects.filter(word=word_match).first()
+
+    n = int(word_match.count)
+    word_match.count = n + 1
+    word_match.save()
+
+    lookup = Word.objects.all().order_by('-count')[:10]
+    
+    context = {
+        "word": WordSerializer(word_match).data,
+        "wordinput": wordinput,
+        "syno": SynonymSerializer(synonym).data if synonym else "해당 없음",
+        "ex": ExampleSerializer(example).data if example else "해당 없음",
+        "count": WordSerializer(lookup, many=True).data,
+    }
+    return Response(context)
+
     
     synonym = Synonym.objects.filter(word=word_match).first()
     example = Example.objects.filter(word=word_match).first()

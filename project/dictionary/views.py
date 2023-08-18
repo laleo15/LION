@@ -91,7 +91,7 @@ def detail_serialized(request, word_id):
 
     serialized_data = {
         "word": word_serializer.data,
-        "syno": syno_serializer.data if syno_serializer else "해당하는 단어가 존재하지 않습니다..",
-        "ex": ex_serializer.data if ex_serializer else "해당하는 문장이 존재하지 않습니다..",
+        "syno": syno_serializer.data if syno_serializer else [],
+        "ex": ex_serializer.data if ex_serializer else [],
     }
     return Response(serialized_data)
