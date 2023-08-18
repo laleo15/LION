@@ -252,18 +252,18 @@ def Qsetting_update(user,UserDict):
         q=question_list[int(key)]
         if value==1:  #left 선택
             user.count+=1
-            if user.generation == "X세대":
+            if user.generation == "X":
                 q.LGX+=1
-            elif user.generation == "M세대":
+            elif user.generation == "M":
                 q.LGM+=1
-            elif user.generation == "Z세대":
+            elif user.generation == "Z":
                 q.LGZ+=1
         if value==2:  #right 선택
-            if user.generation == "X세대":
+            if user.generation == "X":
                 q.RGX+=1
-            elif user.generation == "M세대":
+            elif user.generation == "M":
                 q.RGM+=1
-            elif user.generation == "Z세대":
+            elif user.generation == "Z":
                 q.RGZ+=1
         
         q.Total=q.LGX+q.RGX+q.LGM+q.RGM+q.LGZ+q.RGZ
