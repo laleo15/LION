@@ -107,27 +107,6 @@ def translate_api(request):
     }
     return Response(context)
 
-    
-    synonym = Synonym.objects.filter(word=word_match).first()
-    example = Example.objects.filter(word=word_match).first()
-
-    n = int(word_match.count)
-    word_match.count = n + 1
-    word_match.save()
-
-    lookup = Word.objects.all().order_by('-count')[:10]
-    
-    context = {
-        "word": WordSerializer(word_match).data,
-        "wordinput": wordinput,
-        "syno": SynonymSerializer(synonym).data if synonym else "해당 없음",
-        "ex": ExampleSerializer(example).data if example else "해당 없음",
-        "count": WordSerializer(lookup, many=True).data,
-    }
-    # print(context)
-    return Response(context)
-
-
 # def translate(request):
 #     word1 = Word.objects.all() #데이터베이스 가져오기
 #     wordinput = request.POST.get(str('content')) #입력한 정보 가져오기 
