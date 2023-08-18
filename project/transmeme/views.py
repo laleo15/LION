@@ -79,7 +79,7 @@ def translate_api(request):
                 "word": {
                     "subject": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
                     "meaning": "",
-                    "standard": "잘못 입력하셨거나, 등록되지 않은 정보입니다. 다시 입력해 주세요",
+                    "standard": "다시 입력해 주세요",
                     "count": 0,
                 },
                 "wordinput": wordinput,
